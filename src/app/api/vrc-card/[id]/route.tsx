@@ -83,13 +83,13 @@ export async function GET(request: Request, { params }: Props) {
 
     const ITEM_LABELS: Record<string, { label: string, key: string }> = {
       customTags: { label: 'カスタムタグ', key: 'custom_tags' },
-      vrcHistory: { label: 'VRChat歴', key: 'vrc_history' },
+      vrcHistory: { label: 'ブイチャ歴', key: 'vrc_history' },
       playStyles: { label: 'プレイスタイル', key: 'play_style' },
       playEnvironments: { label: 'プレイ環境', key: 'play_environments' },
-      joinPolicy: { label: 'Joinの方針', key: 'join_policy' },
-      activeTimes: { label: 'よくいる時間', key: 'active_time' },
+      joinPolicy: { label: 'フレンド申請', key: 'join_policy' },
+      activeTimes: { label: '出没時間', key: 'active_time' },
       creatives: { label: 'クリエイティブ', key: 'creatives' },
-      partnerStatus: { label: 'パートナー', key: 'partner_status' },
+      partnerStatus: { label: 'お砂糖', key: 'partner_status' },
       mbti: { label: 'MBTI', key: 'mbti' },
       realLife: { label: 'リアル属性', key: 'real_life' },
       groups: { label: '所属グループ', key: 'groups' },
@@ -112,7 +112,7 @@ export async function GET(request: Request, { params }: Props) {
             justifyContent: 'center',
             position: 'relative',
             fontFamily: '"Zen Maru Gothic"',
-            backgroundColor: colors.sub, // 背景をテーマカラー（サブ色）にする
+            backgroundColor: colors.sub,
           }}
         >
           {/* メインカードコンテナ */}
@@ -126,40 +126,42 @@ export async function GET(request: Request, { params }: Props) {
               boxShadow: '0 10px 50px rgba(0, 0, 0, 0.2)',
               border: `6px solid ${colors.main}`,
               width: '1180px',
-              height: '620px', // 外側の余白を取る
+              height: '620px',
               gap: '40px',
             }}
           >
-            {/* 左側: アバターと名前 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px', justifyContent: 'center' }}>
+            {/* 左側: アバターアイコン（小さく） */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '180px', justifyContent: 'flex-start', paddingTop: '20px' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={avatarUrl}
                 alt="avatar"
                 style={{
-                  width: '280px',
-                  height: '280px',
-                  borderRadius: '140px',
+                  width: '140px',
+                  height: '140px',
+                  borderRadius: '70px',
                   objectFit: 'cover',
-                  border: `8px solid ${colors.main}`,
-                  marginBottom: '20px',
-                  boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+                  border: `6px solid ${colors.main}`,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
                 }}
               />
+            </div>
+            
+            {/* 右側: 名前 + ステータス */}
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'flex-start', gap: '16px' }}>
+              
+              {/* 名前 */}
               <div style={{ 
                 display: 'flex', 
-                fontSize: 48, 
+                fontSize: 40, 
                 fontWeight: 'bold', 
-                color: '#333', 
-                textAlign: 'center',
-                textShadow: '0px 2px 4px rgba(0,0,0,0.1)'
+                color: '#333',
+                marginBottom: '10px'
               }}>
                 {username}
               </div>
-            </div>
-            
-            {/* 右側: ステータス */}
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center', gap: '20px' }}>
+
+              {/* ステータス項目 */}
               {activeItems.map((itemId: string) => {
                 const itemDef = ITEM_LABELS[itemId];
                 if (!itemDef) return null;
@@ -175,14 +177,14 @@ export async function GET(request: Request, { params }: Props) {
                       {valueArray.map((val, i) => (
                         <div key={i} style={{ 
                           display: 'flex',
-                          backgroundColor: itemId === 'customTags' ? 'transparent' : '#f0f0f0', 
-                          padding: itemId === 'customTags' ? '0' : '4px 14px', 
+                          backgroundColor: '#f0f0f0', 
+                          padding: '4px 14px', 
                           borderRadius: '16px', 
-                          fontSize: itemId === 'customTags' ? 22 : 20, 
+                          fontSize: 20, 
                           fontWeight: 'bold', 
-                          color: itemId === 'customTags' ? colors.main : '#444' 
+                          color: '#444' 
                         }}>
-                          {itemId === 'customTags' ? `#${val}` : val}
+                          {val}
                         </div>
                       ))}
                     </div>

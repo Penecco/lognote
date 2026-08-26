@@ -8,33 +8,33 @@ import Link from "next/link";
 import { ProfileData } from "@/types/profile";
 
 const themeColors = {
-  pink: { main: '#ff7eb3', name: 'ピンク' },
-  blue: { main: '#00b4d8', name: 'ブルー' },
-  green: { main: '#4ade80', name: 'グリーン' },
-  purple: { main: '#c084fc', name: 'パープル' },
-  orange: { main: '#fb923c', name: 'オレンジ' },
-  dark: { main: '#333333', name: 'ダーク' },
+  pink: { main: '#FFB6C1', sub: '#FFF0F5', name: 'ピンク' },
+  blue: { main: '#87CEFA', sub: '#F0F8FF', name: 'ブルー' },
+  green: { main: '#98FB98', sub: '#F0FFF0', name: 'グリーン' },
+  purple: { main: '#DDA0DD', sub: '#F8F4FF', name: 'パープル' },
+  orange: { main: '#FFDAB9', sub: '#FFF5EE', name: 'オレンジ' },
+  dark: { main: '#888888', sub: '#F5F5F5', name: 'ダーク' },
 };
 
-const ITEM_LABELS = [
-  { id: 'customTags', label: 'カスタムタグ' },
-  { id: 'vrcHistory', label: 'VRChat歴' },
-  { id: 'playStyles', label: 'プレイスタイル' },
-  { id: 'playEnvironments', label: 'プレイ環境' },
-  { id: 'joinPolicy', label: 'Joinの方針' },
-  { id: 'activeTimes', label: 'よくいる時間' },
-  { id: 'creatives', label: 'クリエイティブ' },
-  { id: 'partnerStatus', label: 'パートナー' },
-  { id: 'mbti', label: 'MBTI' },
-  { id: 'realLife', label: 'リアル属性' },
-  { id: 'groups', label: '所属グループ' },
-  { id: 'favoriteWorlds', label: '好きなワールド' },
-  { id: 'favoriteGames', label: '好きなゲーム' },
-  { id: 'favoriteMangas', label: '好きな漫画' },
-  { id: 'favoriteAnimes', label: '好きなアニメ' },
-  { id: 'favoriteStreamers', label: '好きな配信者' },
-  { id: 'favoriteMusics', label: '好きな音楽' },
-];
+const ITEM_LABELS: Record<string, { label: string, key: string }> = {
+  customTags: { label: 'カスタムタグ', key: 'custom_tags' },
+  vrcHistory: { label: 'ブイチャ歴', key: 'vrc_history' },
+  playStyles: { label: 'プレイスタイル', key: 'play_style' },
+  playEnvironments: { label: 'プレイ環境', key: 'play_environments' },
+  joinPolicy: { label: 'フレンド申請', key: 'join_policy' },
+  activeTimes: { label: '出没時間', key: 'active_time' },
+  creatives: { label: 'クリエイティブ', key: 'creatives' },
+  partnerStatus: { label: 'お砂糖', key: 'partner_status' },
+  mbti: { label: 'MBTI', key: 'mbti' },
+  realLife: { label: 'リアル属性', key: 'real_life' },
+  groups: { label: '所属グループ', key: 'groups' },
+  favoriteWorlds: { label: '好きなワールド', key: 'favorite_worlds' },
+  favoriteGames: { label: '好きなゲーム', key: 'favorite_games' },
+  favoriteMangas: { label: '好きな漫画', key: 'favorite_mangas' },
+  favoriteAnimes: { label: '好きなアニメ', key: 'favorite_animes' },
+  favoriteStreamers: { label: '好きな配信者', key: 'favorite_streamers' },
+  favoriteMusics: { label: '好きな音楽', key: 'favorite_musics' },
+};
 
 export default function VrcCardCustomizer() {
   const router = useRouter();
@@ -80,11 +80,9 @@ export default function VrcCardCustomizer() {
   const toggleItem = (id: string) => {
     setSelectedItems(prev => {
       if (prev.includes(id)) {
-        return prev.filter(item => item !== id);
+        return prev.filter(i => i !== id);
       }
-      if (prev.length >= 4) {
-        return prev; // 4つ以上は選べない
-      }
+      if (prev.length >= 6) return prev; // 最大6個
       return [...prev, id];
     });
   };
@@ -190,24 +188,24 @@ export default function VrcCardCustomizer() {
           <div>
             <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
               <h3 className="font-black text-brand-text text-lg">表示する項目を選ぶ</h3>
-              <span className={`text-sm font-bold px-3 py-1 rounded-full ${selectedItems.length >= 4 ? 'bg-brand-pink/10 text-brand-pink' : 'bg-brand-bg text-brand-text/60'}`}>
-                {selectedItems.length} / 4 個選択中
+              <span className={`text-sm font-bold px-3 py-1 rounded-full ${selectedItems.length >= 6 ? 'bg-brand-pink/10 text-brand-pink' : 'bg-brand-bg text-brand-text/60'}`}>
+                {selectedItems.length} / 6 個選択中
               </span>
             </div>
-            <p className="text-sm font-bold text-brand-text/60 mb-4">
-              カードの中に表示したい項目を4つまで選んでね。プロフィールで入力していない項目は、選んでも表示されません。
+            <p className="text-sm text-brand-text/60 mb-4">
+              VRCカードに表示したい項目を最大6つまで選べます。プロフィールで入力していない項目は、選んでも表示されません。
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {ITEM_LABELS.map(item => {
-                const isSelected = selectedItems.includes(item.id);
-                const isDisabled = !isSelected && selectedItems.length >= 4;
+              {Object.entries(ITEM_LABELS).map(([id, meta]) => {
+                const isSelected = selectedItems.includes(id);
+                const isDisabled = !isSelected && selectedItems.length >= 6;
                 
                 return (
                   <button
-                    key={item.id}
+                    key={id}
                     disabled={isDisabled}
-                    onClick={() => toggleItem(item.id)}
+                    onClick={() => toggleItem(id)}
                     className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all text-left
                       ${isSelected 
                         ? 'border-brand-pink bg-brand-pink/5 text-brand-pink' 
@@ -218,7 +216,7 @@ export default function VrcCardCustomizer() {
                     `}
                   >
                     <span className="font-bold flex items-center gap-2">
-                      {item.label}
+                      {meta.label}
                     </span>
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center
                       ${isSelected ? 'border-brand-pink bg-brand-pink' : 'border-brand-sub/30'}
