@@ -97,7 +97,6 @@ function MyPageContent() {
 
       {/* 姉妹サイト紹介 */}
       <div className="max-w-md md:max-w-lg w-full bg-white p-6 md:p-8 rounded-[32px] shadow-sm border border-brand-sub/20 text-center relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-[#00b4d8] to-[#90e0ef]" />
         <h3 className="text-sm font-bold text-brand-text/50 mb-3">姉妹サイトもよろしければどうぞ！</h3>
         
         <div className="flex justify-center mt-4 mb-4">
