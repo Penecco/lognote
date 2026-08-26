@@ -115,7 +115,7 @@ export async function GET(request: Request, { params }: Props) {
             
             {customTags.length > 0 ? (
               <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '10px' }}>
-                {customTags.slice(0, 5).map((tag, i) => (
+                {customTags.slice(0, 3).map((tag, i) => (
                   <div
                     key={i}
                     style={{
