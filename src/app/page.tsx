@@ -12,6 +12,15 @@ export default function Home() {
   useEffect(() => {
     let isMounted = true;
 
+    // URLハッシュにエラーが含まれているかチェック
+    if (typeof window !== 'undefined' && window.location.hash.includes('error=')) {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const errorDesc = hashParams.get('error_description');
+      if (errorDesc) {
+        alert('ログインエラーが発生しました: ' + decodeURIComponent(errorDesc));
+      }
+    }
+
     const checkUser = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
