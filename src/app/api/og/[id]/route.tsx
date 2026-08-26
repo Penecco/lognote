@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { createClient } from '@supabase/supabase-js';
 
-// export const runtime = 'edge'; // VRChatのImageDownloader対策のため、Edgeランタイム（チャンク転送等）を避ける
+export const runtime = 'edge';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -19,8 +19,12 @@ export async function GET(request: Request, { params }: Props) {
     // 例: "penecco.png" -> "penecco"
     const userId = id.replace(/\.(png|jpg|jpeg)$/i, '');
 
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+      : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://lognote-puce.vercel.app');
+
     let username = "ゲスト";
-    let avatarUrl = "https://logdrop-penecco.vercel.app/images/lognote-logo.png"; // デフォルト画像
+    let avatarUrl = `${baseUrl}/images/lognote-logo.png`; // デフォルト画像
     let customTags: string[] = [];
 
     if (userId) {
@@ -37,10 +41,6 @@ export async function GET(request: Request, { params }: Props) {
       }
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
-      : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://logdrop-penecco.vercel.app');
-
     const bgUrl = `${baseUrl}/images/og_bg.png`;
 
     // Zen Maru Gothic のフォントをフェッチ (Bold)
@@ -48,7 +48,7 @@ export async function GET(request: Request, { params }: Props) {
       'https://github.com/googlefonts/zen-marugothic/raw/main/fonts/ttf/ZenMaruGothic-Bold.ttf'
     ).then((res) => res.arrayBuffer());
 
-    return new ImageResponse(
+    const imageResp = new ImageResponse(
       (
         <div
           style={{
@@ -150,6 +150,18 @@ export async function GET(request: Request, { params }: Props) {
         ],
       }
     );
+
+    // VRChatのImageDownloader対策：
+    // Edgeランタイムのストリームやチャンク転送を避け、完全なバイナリデータとContent-Lengthヘッダを明示的に返す
+    const arrayBuffer = await imageResp.arrayBuffer();
+    return new Response(arrayBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'image/png',
+        'Content-Length': arrayBuffer.byteLength.toString(),
+        'Cache-Control': 'public, max-age=86400, stale-while-revalidate=43200',
+      },
+    });
   } catch (e: any) {
     console.error(e);
     return new Response(`Failed to generate image`, {
