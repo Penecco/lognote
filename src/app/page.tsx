@@ -1,9 +1,55 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
+  const router = useRouter();
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const checkUser = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data } = await supabase
+            .from('profiles')
+            .select('user_id')
+            .eq('id', user.id)
+            .single();
+          
+          if (data && data.user_id && isMounted) {
+            router.replace('/mypage');
+            return;
+          } else if (isMounted) {
+            router.replace('/tutorial');
+            return;
+          }
+        }
+      } catch (error) {
+        console.error("Auth check error:", error);
+      } finally {
+        if (isMounted) setIsChecking(false);
+      }
+    };
+
+    checkUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' || session) {
+        checkUser();
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      authListener.subscription.unsubscribe();
+    };
+  }, [router]);
   const handleLogin = async (provider: 'twitter' | 'discord' | 'google') => {
     // APIキーが設定されていない場合はアラートを出して進ませる（モック動作用）
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
@@ -25,6 +71,14 @@ export default function Home() {
       }
     });
   };
+
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-brand-bg flex items-center justify-center font-sans">
+        <div className="text-brand-text/50 font-bold animate-pulse">ログイン状態を確認中...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-4 font-sans relative">
