@@ -71,13 +71,13 @@ export async function GET(request: Request, { params }: Props) {
     ).then((res) => res.arrayBuffer());
 
     // カラーテーマ設定
-    const themeColors: Record<string, { main: string, sub: string, text: string }> = {
-      pink: { main: '#ff7eb3', sub: '#ff758c', text: '#fff' },
-      blue: { main: '#00b4d8', sub: '#90e0ef', text: '#fff' },
-      green: { main: '#4ade80', sub: '#86efac', text: '#fff' },
-      purple: { main: '#c084fc', sub: '#d8b4fe', text: '#fff' },
-      orange: { main: '#fb923c', sub: '#fdba74', text: '#fff' },
-      dark: { main: '#333333', sub: '#666666', text: '#fff' },
+    const themeColors: Record<string, { main: string, sub: string }> = {
+      pink: { main: '#ff99c2', sub: '#fff0f5' },
+      blue: { main: '#80c6ff', sub: '#f0f8ff' },
+      green: { main: '#8fe5a5', sub: '#f0fff0' },
+      purple: { main: '#d0a3ff', sub: '#faf5ff' },
+      orange: { main: '#ffb380', sub: '#fff7f0' },
+      dark: { main: '#666666', sub: '#f5f5f5' },
     };
     const colors = themeColors[activeTheme] || themeColors.pink;
 
@@ -130,8 +130,8 @@ export async function GET(request: Request, { params }: Props) {
               gap: '40px',
             }}
           >
-            {/* 左側: アバターアイコン（小さく） */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '180px', justifyContent: 'flex-start', paddingTop: '20px' }}>
+            {/* 左側: アバターアイコン（小さく）とリンク */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '220px', justifyContent: 'flex-start', paddingTop: '10px' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={avatarUrl}
@@ -145,6 +145,35 @@ export async function GET(request: Request, { params }: Props) {
                   boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
                 }}
               />
+              
+              {/* リンク一覧 */}
+              <div style={{ display: 'flex', flexDirection: 'column', marginTop: '24px', gap: '10px', width: '100%' }}>
+                {[
+                  { key: 'twitter', icon: 'X', text: profileData.links?.twitter ? `@${profileData.links.twitter.split('/').pop()}` : null },
+                  { key: 'youtube', icon: '▶', text: profileData.links?.youtube ? 'YouTube' : null },
+                  { key: 'booth', icon: '🛒', text: profileData.links?.booth ? 'BOOTH' : null },
+                  { key: 'discord', icon: '💬', text: profileData.links?.discord ? profileData.links.discord : null },
+                  { key: 'vrc', icon: '✨', text: profileData.links?.vrc ? profileData.links.vrc : null },
+                ]
+                  .filter(link => link.text)
+                  .slice(0, 5)
+                  .map((link, i) => (
+                    <div key={i} style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      backgroundColor: 'rgba(255,255,255,0.7)', 
+                      padding: '8px 12px', 
+                      borderRadius: '12px', 
+                      border: `2px solid ${colors.main}50`, 
+                      fontSize: 16, 
+                      fontWeight: 'bold', 
+                      color: '#555' 
+                    }}>
+                      <div style={{ color: colors.main, marginRight: '8px', fontSize: 18 }}>{link.icon}</div>
+                      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{link.text}</div>
+                    </div>
+                  ))}
+              </div>
             </div>
             
             {/* 右側: 名前 + ステータス */}
@@ -153,10 +182,10 @@ export async function GET(request: Request, { params }: Props) {
               {/* 名前 */}
               <div style={{ 
                 display: 'flex', 
-                fontSize: 40, 
+                fontSize: 34, 
                 fontWeight: 'bold', 
                 color: '#333',
-                marginBottom: '10px'
+                marginBottom: '24px'
               }}>
                 {username}
               </div>

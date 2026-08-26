@@ -8,12 +8,12 @@ import Link from "next/link";
 import { ProfileData } from "@/types/profile";
 
 const themeColors = {
-  pink: { main: '#FFB6C1', sub: '#FFF0F5', name: 'ピンク' },
-  blue: { main: '#87CEFA', sub: '#F0F8FF', name: 'ブルー' },
-  green: { main: '#98FB98', sub: '#F0FFF0', name: 'グリーン' },
-  purple: { main: '#DDA0DD', sub: '#F8F4FF', name: 'パープル' },
-  orange: { main: '#FFDAB9', sub: '#FFF5EE', name: 'オレンジ' },
-  dark: { main: '#888888', sub: '#F5F5F5', name: 'ダーク' },
+  pink: { main: '#ff99c2', sub: '#fff0f5', name: 'ピンク' },
+  blue: { main: '#80c6ff', sub: '#f0f8ff', name: 'ブルー' },
+  green: { main: '#8fe5a5', sub: '#f0fff0', name: 'グリーン' },
+  purple: { main: '#d0a3ff', sub: '#faf5ff', name: 'パープル' },
+  orange: { main: '#ffb380', sub: '#fff7f0', name: 'オレンジ' },
+  dark: { main: '#666666', sub: '#f5f5f5', name: 'ダーク' },
 };
 
 const ITEM_LABELS: Record<string, { label: string, key: string }> = {
