@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // 絶対URLの構築 (Vercel環境では NEXT_PUBLIC_VERCEL_URL 等を使うのがベターですが、とりあえずローカルや本番で動くようにベースを取得)
   const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
-    : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://logdrop-penecco.vercel.app'); // ※本番ドメインに合わせてください
+    : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://lognote-puce.vercel.app');
 
   const ogImageUrl = `${baseUrl}/api/og/${decodedUserId}.png`;
 
