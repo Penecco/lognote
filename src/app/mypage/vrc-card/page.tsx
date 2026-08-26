@@ -27,6 +27,13 @@ const ITEM_LABELS = [
   { id: 'partnerStatus', label: 'パートナー' },
   { id: 'mbti', label: 'MBTI' },
   { id: 'realLife', label: 'リアル属性' },
+  { id: 'groups', label: '所属グループ' },
+  { id: 'favoriteWorlds', label: '好きなワールド' },
+  { id: 'favoriteGames', label: '好きなゲーム' },
+  { id: 'favoriteMangas', label: '好きな漫画' },
+  { id: 'favoriteAnimes', label: '好きなアニメ' },
+  { id: 'favoriteStreamers', label: '好きな配信者' },
+  { id: 'favoriteMusics', label: '好きな音楽' },
 ];
 
 export default function VrcCardCustomizer() {

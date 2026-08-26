@@ -81,7 +81,6 @@ export async function GET(request: Request, { params }: Props) {
     };
     const colors = themeColors[activeTheme] || themeColors.pink;
 
-    // 表示項目のマスターデータ
     const ITEM_LABELS: Record<string, { label: string, key: string }> = {
       customTags: { label: 'カスタムタグ', key: 'custom_tags' },
       vrcHistory: { label: 'VRChat歴', key: 'vrc_history' },
@@ -93,6 +92,13 @@ export async function GET(request: Request, { params }: Props) {
       partnerStatus: { label: 'パートナー', key: 'partner_status' },
       mbti: { label: 'MBTI', key: 'mbti' },
       realLife: { label: 'リアル属性', key: 'real_life' },
+      groups: { label: '所属グループ', key: 'groups' },
+      favoriteWorlds: { label: '好きなワールド', key: 'favorite_worlds' },
+      favoriteGames: { label: '好きなゲーム', key: 'favorite_games' },
+      favoriteMangas: { label: '好きな漫画', key: 'favorite_mangas' },
+      favoriteAnimes: { label: '好きなアニメ', key: 'favorite_animes' },
+      favoriteStreamers: { label: '好きな配信者', key: 'favorite_streamers' },
+      favoriteMusics: { label: '好きな音楽', key: 'favorite_musics' },
     };
 
     return new ImageResponse(
@@ -124,38 +130,36 @@ export async function GET(request: Request, { params }: Props) {
               gap: '40px',
             }}
           >
-            {/* 左側: アバターアイコン（小さく） */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '180px', justifyContent: 'flex-start', paddingTop: '20px' }}>
+            {/* 左側: アバターと名前 */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px', justifyContent: 'center' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={avatarUrl}
                 alt="avatar"
                 style={{
-                  width: '140px',
-                  height: '140px',
-                  borderRadius: '70px',
+                  width: '280px',
+                  height: '280px',
+                  borderRadius: '140px',
                   objectFit: 'cover',
-                  border: `6px solid ${colors.main}`,
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                  border: `8px solid ${colors.main}`,
+                  marginBottom: '20px',
+                  boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
                 }}
               />
-            </div>
-            
-            {/* 右側: 名前 + ステータス */}
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'flex-start', gap: '16px' }}>
-              
-              {/* 名前 */}
               <div style={{ 
                 display: 'flex', 
                 fontSize: 48, 
                 fontWeight: 'bold', 
-                color: '#333',
-                marginBottom: '10px'
+                color: '#333', 
+                textAlign: 'center',
+                textShadow: '0px 2px 4px rgba(0,0,0,0.1)'
               }}>
                 {username}
               </div>
-
-              {/* ステータス項目 */}
+            </div>
+            
+            {/* 右側: ステータス */}
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center', gap: '20px' }}>
               {activeItems.map((itemId: string) => {
                 const itemDef = ITEM_LABELS[itemId];
                 if (!itemDef) return null;
