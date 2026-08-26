@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Loader2, Check } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Check, Copy } from "lucide-react";
 import Link from "next/link";
 import { ProfileData } from "@/types/profile";
 
@@ -41,6 +41,8 @@ export default function VrcCardCustomizer() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [origin, setOrigin] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [userId, setUserId] = useState<string>('');
 
@@ -75,6 +77,9 @@ export default function VrcCardCustomizer() {
       setLoading(false);
     };
     fetchProfile();
+    if (typeof window !== 'undefined') {
+      setOrigin(window.location.origin);
+    }
   }, [router]);
 
   const toggleItem = (id: string) => {
@@ -110,11 +115,24 @@ export default function VrcCardCustomizer() {
       
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
+      return true;
     } catch (e) {
       console.error(e);
       alert("保存に失敗しました。");
+      return false;
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSaveAndCopy = async () => {
+    const success = await handleSave();
+    if (success !== false && userId) {
+      const url = `${origin}/api/vrc-card/${userId}.png`;
+      navigator.clipboard.writeText(url).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
     }
   };
 
@@ -152,10 +170,11 @@ export default function VrcCardCustomizer() {
               className="w-full h-auto object-contain bg-gray-50 aspect-[1200/630]"
               key={previewUrl} // URLが変わるたびに再マウントして即時反映させる
             />
-            {/* プレビューのロードが遅れた時用のスケルトンは一旦省略、即時反映のほうが体験が良い */}
           </div>
           <p className="text-center text-sm font-bold text-brand-text/50 mt-4">
-            ※画像の生成には少し時間がかかる場合があります。
+            ※画像の生成には少し時間がかかる場合があります。<br />
+            ※アバター画像が4枚以上設定されている場合でも、VRCカードには最初の3枚だけが表示されます。<br />
+            ※URLをコピーして、プロフィールやSNSに貼り付けてお使いください。
           </p>
         </div>
 
@@ -228,29 +247,28 @@ export default function VrcCardCustomizer() {
               })}
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* フローティング保存ボタン */}
-      <div className="fixed bottom-0 left-0 w-full p-4 bg-gradient-to-t from-brand-bg via-brand-bg to-transparent flex justify-center pointer-events-none z-50">
-        <div className="max-w-md w-full pointer-events-auto">
+      {/* 下部固定ボタンエリア */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-brand-sub/20 flex justify-center z-50">
+        <div className="w-full max-w-4xl flex gap-3 px-2">
           <button
             onClick={handleSave}
-            disabled={saving}
-            className={`w-full flex items-center justify-center gap-2 text-white py-4 px-8 rounded-full font-black text-lg md:text-xl shadow-lg transition-all active:scale-95 border-2 ${
-              saveSuccess
-                ? "bg-green-500 border-green-500"
-                : "bg-brand-pink border-brand-pink hover:bg-brand-pink/90 hover:-translate-y-1"
-            } disabled:opacity-70 disabled:cursor-not-allowed`}
+            disabled={saving || !userId}
+            className="flex-1 bg-white text-brand-text py-4 rounded-full font-black text-sm md:text-base border-2 border-brand-sub/50 shadow-sm hover:bg-brand-hover hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {saving ? (
-              <><Loader2 className="w-6 h-6 animate-spin" /> 保存中...</>
-            ) : saveSuccess ? (
-              <><Check className="w-6 h-6" /> 保存しました！</>
-            ) : (
-              <><Save className="w-6 h-6" /> カードの設定を保存する</>
-            )}
+            {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+            {saving ? '保存中...' : saveSuccess ? '保存しました！' : '上書き保存'}
+          </button>
+          
+          <button
+            onClick={handleSaveAndCopy}
+            disabled={saving || !userId}
+            className="flex-[2] bg-brand-pink text-white py-4 rounded-full font-black text-sm md:text-base shadow-sm hover:bg-brand-pink/90 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+            {saving ? '保存中...' : copied ? 'コピーしたよ！' : '保存してURLをコピー'}
           </button>
         </div>
       </div>

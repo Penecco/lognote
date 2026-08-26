@@ -130,10 +130,10 @@ export async function GET(request: Request, { params }: Props) {
               gap: '40px',
             }}
           >
-            {/* 左側: アバターアイコン（縦に最大5枚） */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '140px', justifyContent: 'flex-start', paddingTop: '10px', gap: '10px' }}>
+            {/* 左側: アバターアイコン（縦に最大3枚） */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '180px', justifyContent: 'flex-start', paddingTop: '10px', gap: '24px' }}>
               {(profileData.avatarUrls?.length > 0 ? profileData.avatarUrls : [avatarUrl])
-                .slice(0, 5)
+                .slice(0, 3)
                 .map((url: string, index: number) => (
                   <div key={index} style={{ display: 'flex' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -141,12 +141,12 @@ export async function GET(request: Request, { params }: Props) {
                       src={url || ''}
                       alt={`avatar-${index}`}
                       style={{
-                        width: '100px',
-                        height: '100px',
-                        borderRadius: '50px',
+                        width: '150px',
+                        height: '150px',
+                        borderRadius: '75px',
                         objectFit: 'cover',
-                        border: `4px solid ${colors.main}`,
-                        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+                        border: `6px solid ${colors.main}`,
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
                       }}
                     />
                   </div>
