@@ -1,9 +1,25 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // ログイン完了（URLハッシュの処理完了）を検知してtutorialへ飛ばす
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' || session) {
+        router.push('/tutorial');
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [router]);
   const handleLogin = async (provider: 'twitter' | 'discord' | 'google') => {
     // APIキーが設定されていない場合はアラートを出して進ませる（モック動作用）
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
@@ -18,7 +34,7 @@ export default function Home() {
     await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}`,
         queryParams: {
           prompt: 'consent', // アカウント選択画面を毎回強制表示させる
         },
