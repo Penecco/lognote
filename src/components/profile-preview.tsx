@@ -40,7 +40,7 @@ export default function ProfilePreview({ profile }: ProfilePreviewProps) {
       className={`w-full min-h-[100dvh] font-sans bg-brand-bg ${themeClass} md:p-8 flex flex-col`}
       style={isCustomBg ? { backgroundImage: `url(${profile.backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' } : {}}
     >
-      <div className="w-full md:max-w-3xl mx-auto bg-brand-card backdrop-blur-sm rounded-none md:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden border-0 md:border border-brand-sub/20 flex-1">
+      <div className="w-full md:w-[60%] md:max-w-none mx-auto bg-brand-card backdrop-blur-sm rounded-none md:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden border-0 md:border border-brand-sub/20 flex-1">
         {/* カバー画像（ヘッダー） */}
         <div className="w-full aspect-[1920/600] md:aspect-[1920/800] bg-brand-accent relative overflow-hidden">
           {profile.coverImage ? (
