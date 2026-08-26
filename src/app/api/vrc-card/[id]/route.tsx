@@ -167,7 +167,7 @@ export async function GET(request: Request, { params }: Props) {
             {/* 右側: ステータス */}
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center', gap: '20px' }}>
               
-              {activeItems.map((itemId) => {
+              {activeItems.map((itemId: string) => {
                 const itemDef = ITEM_LABELS[itemId];
                 if (!itemDef) return null;
                 const valueArray = profileData[itemDef.key];
