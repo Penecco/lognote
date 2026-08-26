@@ -45,7 +45,8 @@ function MyPageContent() {
   };
 
   const handleCopyOgLink = () => {
-    const ogUrl = `${origin}/api/og/${userId}.png`;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const ogUrl = `${supabaseUrl}/storage/v1/object/public/images/${userId}/vrc_card.png`;
     navigator.clipboard.writeText(ogUrl).then(() => {
       setOgCopied(true);
       setTimeout(() => setOgCopied(false), 2000);
