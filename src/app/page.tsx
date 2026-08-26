@@ -60,25 +60,37 @@ export default function Home() {
     };
   }, [router]);
   const handleLogin = async (provider: 'twitter' | 'discord' | 'google') => {
-    // APIキーが設定されていない場合はアラートを出して進ませる（モック動作用）
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      alert(`【テスト動作】${provider}でログインしました！（※APIキー設定前のため、そのまま進みます）`);
-      window.location.href = "/tutorial";
-      return;
-    }
-
-    // 確実に別のアカウントでログインできるように、既存のセッションを破棄する
-    await supabase.auth.signOut();
-
-    await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${window.location.origin}/tutorial`,
-        queryParams: {
-          prompt: 'consent', // アカウント選択画面を毎回強制表示させる
-        },
+    try {
+      // APIキーが設定されていない場合はアラートを出して進ませる（モック動作用）
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+        alert(`【テスト動作】${provider}でログインしました！（※APIキー設定前のため、そのまま進みます）`);
+        window.location.href = "/tutorial";
+        return;
       }
-    });
+
+      alert("ログイン処理を開始します。プロバイダー: " + provider);
+
+      // 確実に別のアカウントでログインできるように、既存のセッションを破棄する
+      await supabase.auth.signOut();
+      
+      alert("既存セッションの破棄完了。これから認証画面へ遷移します。");
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}`,
+          queryParams: {
+            prompt: 'consent', // アカウント選択画面を毎回強制表示させる
+          },
+        }
+      });
+
+      if (error) {
+        alert("signInWithOAuthでエラー発生: " + error.message);
+      }
+    } catch (e: any) {
+      alert("ログイン関数内で例外が発生しました: " + e.message);
+    }
   };
 
   if (isChecking) {
