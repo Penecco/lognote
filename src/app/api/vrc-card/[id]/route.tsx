@@ -106,67 +106,56 @@ export async function GET(request: Request, { params }: Props) {
             justifyContent: 'center',
             position: 'relative',
             fontFamily: '"Zen Maru Gothic"',
+            backgroundColor: colors.sub, // 背景をテーマカラー（サブ色）にする
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={bgUrl}
-            alt="background"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-          />
-
           {/* メインカードコンテナ */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'row',
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              padding: '50px 70px',
-              borderRadius: '50px',
-              boxShadow: '0 10px 50px rgba(0, 0, 0, 0.3)',
-              border: `6px solid ${colors.main}50`,
-              width: '1000px',
-              gap: '60px',
+              padding: '40px 50px',
+              borderRadius: '40px',
+              boxShadow: '0 10px 50px rgba(0, 0, 0, 0.2)',
+              border: `6px solid ${colors.main}`,
+              width: '1180px',
+              height: '620px', // 外側の余白を取る
+              gap: '40px',
             }}
           >
-            {/* 左側: アバターと名前 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px', justifyContent: 'center' }}>
+            {/* 左側: アバターアイコン（小さく） */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '180px', justifyContent: 'flex-start', paddingTop: '20px' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={avatarUrl}
                 alt="avatar"
                 style={{
-                  width: '280px',
-                  height: '280px',
-                  borderRadius: '140px',
+                  width: '140px',
+                  height: '140px',
+                  borderRadius: '70px',
                   objectFit: 'cover',
-                  border: `8px solid ${colors.main}`,
-                  marginBottom: '20px',
-                  boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+                  border: `6px solid ${colors.main}`,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
                 }}
               />
+            </div>
+            
+            {/* 右側: 名前 + ステータス */}
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'flex-start', gap: '16px' }}>
+              
+              {/* 名前 */}
               <div style={{ 
                 display: 'flex', 
-                fontSize: 44, 
+                fontSize: 48, 
                 fontWeight: 'bold', 
-                color: '#333', 
-                textAlign: 'center',
-                textShadow: '0px 2px 4px rgba(0,0,0,0.1)'
+                color: '#333',
+                marginBottom: '10px'
               }}>
                 {username}
               </div>
-            </div>
-            
-            {/* 右側: ステータス */}
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center', gap: '20px' }}>
-              
+
+              {/* ステータス項目 */}
               {activeItems.map((itemId: string) => {
                 const itemDef = ITEM_LABELS[itemId];
                 if (!itemDef) return null;
@@ -174,18 +163,18 @@ export async function GET(request: Request, { params }: Props) {
                 if (!valueArray || !Array.isArray(valueArray) || valueArray.length === 0) return null;
 
                 return (
-                  <div key={itemId} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <div style={{ display: 'flex', color: colors.main, fontSize: 22, fontWeight: 'bold' }}>
+                  <div key={itemId} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div style={{ display: 'flex', color: colors.main, fontSize: 18, fontWeight: 'bold' }}>
                       {itemDef.label}
                     </div>
-                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       {valueArray.map((val, i) => (
                         <div key={i} style={{ 
                           display: 'flex',
                           backgroundColor: itemId === 'customTags' ? 'transparent' : '#f0f0f0', 
-                          padding: itemId === 'customTags' ? '0' : '6px 18px', 
-                          borderRadius: '20px', 
-                          fontSize: itemId === 'customTags' ? 26 : 24, 
+                          padding: itemId === 'customTags' ? '0' : '4px 14px', 
+                          borderRadius: '16px', 
+                          fontSize: itemId === 'customTags' ? 22 : 20, 
                           fontWeight: 'bold', 
                           color: itemId === 'customTags' ? colors.main : '#444' 
                         }}>
@@ -202,8 +191,8 @@ export async function GET(request: Request, { params }: Props) {
         </div>
       ),
       {
-        width: 1200,
-        height: 630,
+        width: 1280, // 16:9 比率
+        height: 720,
         headers: {
           'Cache-Control': 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400',
         },
