@@ -69,13 +69,9 @@ export default function Home() {
         return;
       }
 
-      alert("ログイン処理を開始します。プロバイダー: " + provider);
-
       // 確実に別のアカウントでログインできるように、既存のセッションを破棄する
       await supabase.auth.signOut();
       
-      alert("既存セッションの破棄完了。これから認証画面へ遷移します。");
-
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
