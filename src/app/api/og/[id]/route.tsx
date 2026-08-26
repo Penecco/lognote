@@ -48,7 +48,7 @@ export async function GET(request: Request, { params }: Props) {
       'https://github.com/googlefonts/zen-marugothic/raw/main/fonts/ttf/ZenMaruGothic-Bold.ttf'
     ).then((res) => res.arrayBuffer());
 
-    const imageResp = new ImageResponse(
+    return new ImageResponse(
       (
         <div
           style={{
@@ -150,18 +150,6 @@ export async function GET(request: Request, { params }: Props) {
         ],
       }
     );
-
-    // VRChatのImageDownloader対策：
-    // Edgeランタイムのストリームやチャンク転送を避け、完全なバイナリデータとContent-Lengthヘッダを明示的に返す
-    const arrayBuffer = await imageResp.arrayBuffer();
-    return new Response(arrayBuffer, {
-      status: 200,
-      headers: {
-        'Content-Type': 'image/png',
-        'Content-Length': arrayBuffer.byteLength.toString(),
-        'Cache-Control': 'public, max-age=86400, stale-while-revalidate=43200',
-      },
-    });
   } catch (e: any) {
     console.error(e);
     return new Response(`Failed to generate image`, {
