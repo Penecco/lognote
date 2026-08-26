@@ -130,50 +130,27 @@ export async function GET(request: Request, { params }: Props) {
               gap: '40px',
             }}
           >
-            {/* 左側: アバターアイコン（小さく）とリンク */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '220px', justifyContent: 'flex-start', paddingTop: '10px' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={avatarUrl}
-                alt="avatar"
-                style={{
-                  width: '140px',
-                  height: '140px',
-                  borderRadius: '70px',
-                  objectFit: 'cover',
-                  border: `6px solid ${colors.main}`,
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                }}
-              />
-              
-              {/* リンク一覧 */}
-              <div style={{ display: 'flex', flexDirection: 'column', marginTop: '24px', gap: '10px', width: '100%' }}>
-                {[
-                  { key: 'twitter', icon: 'X', text: profileData.links?.twitter ? `@${profileData.links.twitter.split('/').pop()}` : null },
-                  { key: 'youtube', icon: '▶', text: profileData.links?.youtube ? 'YouTube' : null },
-                  { key: 'booth', icon: '🛒', text: profileData.links?.booth ? 'BOOTH' : null },
-                  { key: 'discord', icon: '💬', text: profileData.links?.discord ? profileData.links.discord : null },
-                  { key: 'vrc', icon: '✨', text: profileData.links?.vrc ? profileData.links.vrc : null },
-                ]
-                  .filter(link => link.text)
-                  .slice(0, 5)
-                  .map((link, i) => (
-                    <div key={i} style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      backgroundColor: 'rgba(255,255,255,0.7)', 
-                      padding: '8px 12px', 
-                      borderRadius: '12px', 
-                      border: `2px solid ${colors.main}50`, 
-                      fontSize: 16, 
-                      fontWeight: 'bold', 
-                      color: '#555' 
-                    }}>
-                      <div style={{ color: colors.main, marginRight: '8px', fontSize: 18 }}>{link.icon}</div>
-                      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{link.text}</div>
-                    </div>
-                  ))}
-              </div>
+            {/* 左側: アバターアイコン（縦に最大5枚） */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '140px', justifyContent: 'flex-start', paddingTop: '10px', gap: '10px' }}>
+              {(profileData.avatarUrls?.length > 0 ? profileData.avatarUrls : [avatarUrl])
+                .slice(0, 5)
+                .map((url: string, index: number) => (
+                  <div key={index} style={{ display: 'flex' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={url || ''}
+                      alt={`avatar-${index}`}
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        borderRadius: '50px',
+                        objectFit: 'cover',
+                        border: `4px solid ${colors.main}`,
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+                      }}
+                    />
+                  </div>
+                ))}
             </div>
             
             {/* 右側: 名前 + ステータス */}
