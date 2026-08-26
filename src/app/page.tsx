@@ -18,7 +18,7 @@ export default function Home() {
     await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/tutorial`,
+        redirectTo: `${window.location.origin}/auth/callback`,
         queryParams: {
           prompt: 'consent', // アカウント選択画面を毎回強制表示させる
         },
