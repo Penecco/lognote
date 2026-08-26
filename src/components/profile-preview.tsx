@@ -9,8 +9,24 @@ interface ProfilePreviewProps {
 
 export default function ProfilePreview({ profile }: ProfilePreviewProps) {
   const [currentAvatarIndex, setCurrentAvatarIndex] = useState(0);
+  const [imageOrientations, setImageOrientations] = useState<Record<string, 'landscape' | 'portrait'>>({});
 
   const avatarList = profile.avatarUrls || (profile.avatarUrl ? [profile.avatarUrl] : []);
+
+  useEffect(() => {
+    if (profile.galleryImages) {
+      profile.galleryImages.forEach(imgUrl => {
+        const img = new window.Image();
+        img.onload = () => {
+          setImageOrientations(prev => ({
+            ...prev,
+            [imgUrl]: img.height > img.width ? 'portrait' : 'landscape'
+          }));
+        };
+        img.src = imgUrl;
+      });
+    }
+  }, [profile.galleryImages]);
 
   const handlePrevAvatar = () => {
     setCurrentAvatarIndex((prev) => (prev === 0 ? avatarList.length - 1 : prev - 1));
@@ -330,14 +346,30 @@ export default function ProfilePreview({ profile }: ProfilePreviewProps) {
               <h3 className="text-lg md:text-xl font-black text-brand-text mb-4 flex items-center gap-2 border-b-2 border-brand-pink/30 pb-2">
                 <ImageIcon className="w-5 h-5 text-brand-pink" /> ギャラリー
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {profile.galleryImages.map((img, i) => (
-                  <div key={i} className="aspect-[16/9] bg-brand-sub/10 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-brand-sub/20">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-                  </div>
-                ))}
-              </div>
+              
+              {/* 横画像 */}
+              {profile.galleryImages.filter(img => imageOrientations[img] !== 'portrait').length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  {profile.galleryImages.filter(img => imageOrientations[img] !== 'portrait').map((img, i) => (
+                    <div key={`landscape-${i}`} className="aspect-[16/9] bg-brand-sub/10 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-brand-sub/20">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img} alt={`Gallery Landscape ${i+1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 縦画像 */}
+              {profile.galleryImages.filter(img => imageOrientations[img] === 'portrait').length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {profile.galleryImages.filter(img => imageOrientations[img] === 'portrait').map((img, i) => (
+                    <div key={`portrait-${i}`} className="aspect-[9/16] bg-brand-sub/10 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-brand-sub/20">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img} alt={`Gallery Portrait ${i+1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
