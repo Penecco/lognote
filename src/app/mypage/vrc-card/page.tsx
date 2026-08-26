@@ -174,7 +174,7 @@ export default function VrcCardCustomizer() {
           <p className="text-center text-sm font-bold text-brand-text/50 mt-4">
             ※画像の生成には少し時間がかかる場合があります。<br />
             ※アバター画像が4枚以上設定されている場合でも、VRCカードには最初の3枚だけが表示されます。<br />
-            ※URLをコピーして、プロフィールやSNSに貼り付けてお使いください。
+            ※URLをコピーして、VRC内で貼り付けてお使いください。
           </p>
         </div>
 
