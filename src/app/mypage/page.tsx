@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Share2, Edit3, AtSign, Copy, Check, ExternalLink, X, Home } from "lucide-react";
+import { Share2, Edit3, AtSign, Copy, Check, ExternalLink, X, Home, Image as ImageIcon } from "lucide-react";
 import { useEffect, useState, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 function MyPageContent() {
   const [userId, setUserId] = useState<string>('');
   const [copied, setCopied] = useState(false);
+  const [ogCopied, setOgCopied] = useState(false);
   const [origin, setOrigin] = useState('');
   
   const searchParams = useSearchParams();
@@ -40,6 +41,14 @@ function MyPageContent() {
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const handleCopyOgLink = () => {
+    const ogUrl = `${origin}/api/og/${userId}.png`;
+    navigator.clipboard.writeText(ogUrl).then(() => {
+      setOgCopied(true);
+      setTimeout(() => setOgCopied(false), 2000);
     });
   };
 
@@ -75,6 +84,15 @@ function MyPageContent() {
           >
             {copied ? <Check className="w-5 h-5 text-brand-pink" /> : <Copy className="w-5 h-5" />}
             {copied ? "コピーしたよ！" : "リンクをコピー"}
+          </button>
+
+          <button 
+            onClick={handleCopyOgLink}
+            disabled={!userId}
+            className="flex items-center justify-center gap-2 bg-white text-brand-text border-2 border-brand-sub/50 px-4 py-3 rounded-full font-black text-sm md:text-base transition-all hover:bg-brand-hover hover:-translate-y-1 active:scale-95 shadow-sm w-full disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {ogCopied ? <Check className="w-5 h-5 text-brand-pink" /> : <ImageIcon className="w-5 h-5" />}
+            {ogCopied ? "コピーしたよ！" : "VRC用画像URLをコピー"}
           </button>
 
           <a 
