@@ -22,9 +22,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!data) return { title: 'プロフィールが見つかりません' };
 
-  // Supabase Storageから静的なOG画像を読み込む
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  const ogImageUrl = `${supabaseUrl}/storage/v1/object/public/images/${decodedUserId}/og_image.png`;
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+    : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://lognote-puce.vercel.app');
+
+  const ogImageUrl = `${baseUrl}/api/og/${decodedUserId}.png`;
 
   return {
     title: `${data.username}のろぐのーとプロフィール⭐`,

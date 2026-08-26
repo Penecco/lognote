@@ -45,9 +45,8 @@ function MyPageContent() {
   };
 
   const handleCopyOgLink = () => {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const ogUrl = `${supabaseUrl}/storage/v1/object/public/images/${userId}/vrc_card.png`;
-    navigator.clipboard.writeText(ogUrl).then(() => {
+    const vrcOgUrl = `${origin}/api/vrc-card/${userId}.png`;
+    navigator.clipboard.writeText(vrcOgUrl).then(() => {
       setOgCopied(true);
       setTimeout(() => setOgCopied(false), 2000);
     });

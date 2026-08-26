@@ -147,36 +147,6 @@ export default function EditProfile() {
 
       if (error) throw error;
 
-      // === VRChat・Discord用の静的画像をバックグラウンドで生成＆アップロード ===
-      // （※この処理は少し時間がかかるため、ユーザーには先にアラートを出してもよいですが、
-      // 確実な保存のために待機するか、バックグラウンドに流します。今回は確実な保存のためawaitします）
-      try {
-        const origin = window.location.origin;
-        
-        // 1. リンクカード(OGP)用画像の取得とアップロード
-        const ogRes = await fetch(`${origin}/api/og/${user.id}.png`);
-        if (ogRes.ok) {
-          const ogBlob = await ogRes.blob();
-          const ogFile = new File([ogBlob], 'og_image.png', { type: 'image/png' });
-          await supabase.storage
-            .from('images')
-            .upload(`${user.id}/og_image.png`, ogFile, { upsert: true, cacheControl: '0' });
-        }
-
-        // 2. VRCカード(名刺)用画像の取得とアップロード
-        const vrcRes = await fetch(`${origin}/api/vrc-card/${user.id}.png`);
-        if (vrcRes.ok) {
-          const vrcBlob = await vrcRes.blob();
-          const vrcFile = new File([vrcBlob], 'vrc_card.png', { type: 'image/png' });
-          await supabase.storage
-            .from('images')
-            .upload(`${user.id}/vrc_card.png`, vrcFile, { upsert: true, cacheControl: '0' });
-        }
-      } catch (imgError) {
-        console.error('画像生成・アップロードエラー:', imgError);
-        // 画像生成に失敗してもプロフィール自体は保存されているためエラーにはしない
-      }
-
       if (returnToDashboard) {
         router.push("/mypage");
       } else {
