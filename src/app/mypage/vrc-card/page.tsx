@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Loader2, Check, Copy } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Check, Copy, Download } from "lucide-react";
 import Link from "next/link";
 import { ProfileData } from "@/types/profile";
 
@@ -147,6 +147,24 @@ export default function VrcCardCustomizer() {
   // プレビュー用URLの構築
   const previewUrl = `/api/vrc-card/${userId}.png?previewTheme=${themeColor}&previewItems=${selectedItems.join(',')}&t=${Date.now()}`;
 
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(previewUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `vrc_card_${userId}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (e) {
+      console.error(e);
+      alert("画像のダウンロードに失敗しました。");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-start pt-8 pb-32 p-4 font-sans relative">
       <div className="max-w-4xl w-full">
@@ -171,6 +189,16 @@ export default function VrcCardCustomizer() {
               key={previewUrl} // URLが変わるたびに再マウントして即時反映させる
             />
           </div>
+
+          <div className="flex justify-center mt-4 mb-2">
+            <button
+              onClick={handleDownload}
+              className="flex items-center gap-2 bg-brand-card border border-brand-sub/30 text-brand-text/70 px-6 py-2.5 rounded-full font-bold text-sm md:text-base shadow-sm hover:bg-brand-sub/10 hover:text-brand-text hover:-translate-y-0.5 active:scale-95 transition-all"
+            >
+              <Download className="w-4 h-4 md:w-5 md:h-5" /> 画像としてダウンロード
+            </button>
+          </div>
+
           <p className="text-center text-sm font-bold text-brand-text/50 mt-4">
             ※画像の生成には少し時間がかかる場合があります。<br />
             ※アバター画像が4枚以上設定されている場合でも、VRCカードには最初の3枚だけが表示されます。<br />
