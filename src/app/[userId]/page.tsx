@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl = process.env.NODE_ENV === 'development' 
     ? 'http://localhost:3000' 
-    : 'https://lognote-puce.vercel.app';
+    : 'https://lognote-penecco.vercel.app';
 
   const ogImageUrl = `${baseUrl}/api/og/${decodedUserId}.png`;
 

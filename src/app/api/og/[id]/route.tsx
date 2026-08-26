@@ -21,7 +21,7 @@ export async function GET(request: Request, { params }: Props) {
 
     const baseUrl = process.env.NODE_ENV === 'development' 
       ? 'http://localhost:3000' 
-      : 'https://lognote-puce.vercel.app';
+      : 'https://lognote-penecco.vercel.app';
 
     let username = "ゲスト";
     let avatarUrl = `${baseUrl}/images/lognote-logo.png`; // デフォルト画像
