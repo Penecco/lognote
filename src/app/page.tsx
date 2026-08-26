@@ -30,8 +30,8 @@ export default function Home() {
         <Sparkles className="w-32 h-32" />
       </div>
 
-      <div className="max-w-xl w-full text-center space-y-6 bg-white/80 backdrop-blur-md p-8 md:p-12 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10">
-        <div className="w-56 h-56 md:w-64 md:h-64 mx-auto mb-2 flex items-center justify-center overflow-hidden">
+      <div className="max-w-md w-full text-center space-y-5 bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10">
+        <div className="w-40 h-40 md:w-48 md:h-48 mx-auto mb-2 flex items-center justify-center overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src="/images/lognote-logo.png" 
@@ -42,23 +42,23 @@ export default function Home() {
         <h1 className="sr-only">
           ろぐのーと
         </h1>
-        <p className="text-brand-text/70 font-bold text-base leading-relaxed">
+        <p className="text-brand-text/70 font-bold text-sm md:text-base leading-relaxed">
           テンプレートで簡単にプロフィールを作れます！<br />
           作成したページのリンクをVRCに貼って話のタネにしよう🌱<br />
           自由記述もできるので自分なりのプロフを作ってね！
         </p>
         
-        <div className="pt-6 space-y-4 flex flex-col items-center">
+        <div className="pt-4 space-y-3 flex flex-col items-center">
           <button 
             onClick={() => handleLogin('twitter')}
-            className="flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-full font-black text-base transition-all hover:-translate-y-1 hover:shadow-lg active:scale-95 shadow-md w-full sm:w-72"
+            className="flex items-center justify-center gap-2 bg-black text-white px-5 py-2.5 rounded-full font-black text-sm md:text-base transition-all hover:-translate-y-1 hover:shadow-lg active:scale-95 shadow-md w-full sm:w-64"
           >
             𝕏 (Twitter) でログイン
           </button>
           
           <button 
             onClick={() => handleLogin('discord')}
-            className="flex items-center justify-center gap-2 bg-[#5865F2] text-white px-6 py-3 rounded-full font-black text-base transition-all hover:-translate-y-1 hover:shadow-lg active:scale-95 shadow-md w-full sm:w-72"
+            className="flex items-center justify-center gap-2 bg-[#5865F2] text-white px-5 py-2.5 rounded-full font-black text-sm md:text-base transition-all hover:-translate-y-1 hover:shadow-lg active:scale-95 shadow-md w-full sm:w-64"
           >
             Discord でログイン
           </button>
@@ -71,11 +71,11 @@ export default function Home() {
       </div>
 
       {/* 開発者紹介セクション */}
-      <div className="max-w-xl w-full mt-6 bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10 text-center">
-        <h2 className="text-sm md:text-base font-bold text-brand-text/50 mb-4 tracking-wider">Developed by</h2>
+      <div className="max-w-md w-full mt-6 bg-white/80 backdrop-blur-md p-5 md:p-8 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10 text-center">
+        <h2 className="text-sm font-bold text-brand-text/50 mb-4 tracking-wider">Developed by</h2>
         
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-4 border-white shadow-md bg-brand-bg">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-white shadow-md bg-brand-bg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src="/images/penecco.png" 

@@ -49,21 +49,21 @@ function MyPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-start pt-10 p-4 font-sans relative pb-16">
-      <div className="max-w-md md:max-w-lg w-full text-center space-y-6 bg-white p-6 md:p-10 rounded-[32px] shadow-sm border border-brand-sub/20 mb-8">
-        <h1 className="text-2xl font-black text-brand-text mb-4">マイページ</h1>
+    <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-start pt-8 p-4 font-sans relative pb-12">
+      <div className="max-w-sm md:max-w-md w-full text-center space-y-5 bg-white p-5 md:p-8 rounded-[28px] shadow-sm border border-brand-sub/20 mb-6">
+        <h1 className="text-xl font-black text-brand-text mb-3">マイページ</h1>
         
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           <Link 
             href={`/${userId}`}
-            className={`flex items-center justify-center gap-3 bg-brand-pink text-white border-2 border-brand-pink px-5 py-4 rounded-full font-black text-base md:text-lg transition-all hover:bg-brand-pink/90 hover:-translate-y-1 active:scale-95 shadow-sm w-full ${!userId ? 'opacity-50 pointer-events-none' : ''}`}
+            className={`flex items-center justify-center gap-2 bg-brand-pink text-white border-2 border-brand-pink px-4 py-3 rounded-full font-black text-sm md:text-base transition-all hover:bg-brand-pink/90 hover:-translate-y-1 active:scale-95 shadow-sm w-full ${!userId ? 'opacity-50 pointer-events-none' : ''}`}
           >
             <Home className="w-5 h-5" /> 自分のページ
           </Link>
 
           <Link 
             href="/edit"
-            className="flex items-center justify-center gap-3 bg-white text-brand-text border-2 border-brand-sub/50 px-5 py-4 rounded-full font-black text-base md:text-lg transition-all hover:bg-brand-hover hover:-translate-y-1 active:scale-95 shadow-sm w-full"
+            className="flex items-center justify-center gap-2 bg-white text-brand-text border-2 border-brand-sub/50 px-4 py-3 rounded-full font-black text-sm md:text-base transition-all hover:bg-brand-hover hover:-translate-y-1 active:scale-95 shadow-sm w-full"
           >
             <Edit3 className="w-5 h-5" /> 編集
           </Link>
@@ -71,7 +71,7 @@ function MyPageContent() {
           <button 
             onClick={handleCopyLink}
             disabled={!userId}
-            className="flex items-center justify-center gap-3 bg-white text-brand-text border-2 border-brand-sub/50 px-5 py-4 rounded-full font-black text-base md:text-lg transition-all hover:bg-brand-hover hover:-translate-y-1 active:scale-95 shadow-sm w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-2 bg-white text-brand-text border-2 border-brand-sub/50 px-4 py-3 rounded-full font-black text-sm md:text-base transition-all hover:bg-brand-hover hover:-translate-y-1 active:scale-95 shadow-sm w-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {copied ? <Check className="w-5 h-5 text-brand-pink" /> : <Copy className="w-5 h-5" />}
             {copied ? "コピーしたよ！" : "リンクをコピー"}
@@ -81,7 +81,7 @@ function MyPageContent() {
             href={`https://x.com/intent/tweet?text=${encodeURIComponent(`VRCのプロフィールを作りました⭐\n\nリンク先でぜひ見てみてね🐱\n\nみんなも作ってシェアしよう🐾\n\n#VRChatプロフみてみて #ろぐのーと\n`)}&url=${encodeURIComponent(origin + '/' + userId)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex items-center justify-center gap-3 bg-black text-white px-5 py-4 rounded-full font-black text-base md:text-lg transition-all hover:bg-black/80 hover:-translate-y-1 active:scale-95 shadow-sm w-full ${!userId ? 'opacity-50 pointer-events-none' : ''}`}
+            className={`flex items-center justify-center gap-2 bg-black text-white px-4 py-3 rounded-full font-black text-sm md:text-base transition-all hover:bg-black/80 hover:-translate-y-1 active:scale-95 shadow-sm w-full ${!userId ? 'opacity-50 pointer-events-none' : ''}`}
           >
             <AtSign className="w-5 h-5" /> Xでシェア
           </a>
@@ -89,16 +89,16 @@ function MyPageContent() {
       </div>
 
       {/* 姉妹サイト紹介 */}
-      <div className="max-w-md md:max-w-lg w-full bg-white p-8 md:p-10 rounded-[40px] shadow-sm border border-brand-sub/20 text-center relative overflow-hidden group">
+      <div className="max-w-sm md:max-w-md w-full bg-white p-6 md:p-8 rounded-[32px] shadow-sm border border-brand-sub/20 text-center relative overflow-hidden group">
         <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-[#00b4d8] to-[#90e0ef]" />
-        <h3 className="text-sm md:text-base font-bold text-brand-text/50 mb-4">姉妹サイトもよろしければどうぞ！</h3>
+        <h3 className="text-sm font-bold text-brand-text/50 mb-3">姉妹サイトもよろしければどうぞ！</h3>
         
-        <div className="flex justify-center mt-6 mb-4">
+        <div className="flex justify-center mt-4 mb-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logdrop-logo.png" alt="ろぐどろっぷ" className="h-32 md:h-40 object-contain hover:scale-105 transition-transform duration-300" />
+          <img src="/images/logdrop-logo.png" alt="ろぐどろっぷ" className="h-24 md:h-32 object-contain hover:scale-105 transition-transform duration-300" />
         </div>
 
-        <p className="text-brand-text/80 font-bold text-sm md:text-base leading-relaxed mb-6">
+        <p className="text-brand-text/80 font-bold text-xs md:text-sm leading-relaxed mb-5">
           VRChatのフレンドと今日の思い出をサクッと共有！<br/>
           ルームを作成して写真をシェアしましょう✨<br/>
           Vlog風動画の作成もできます！
@@ -107,7 +107,7 @@ function MyPageContent() {
           href="https://logdrop-penecco.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center bg-[#00b4d8] text-white px-6 py-4 rounded-full font-black text-base md:text-lg shadow-md hover:bg-[#0096c7] hover:-translate-y-1 transition-all active:scale-95 w-full"
+          className="flex items-center justify-center bg-[#00b4d8] text-white px-5 py-3 rounded-full font-black text-sm md:text-base shadow-md hover:bg-[#0096c7] hover:-translate-y-1 transition-all active:scale-95 w-full"
         >
           ろぐどろっぷを見てみる
         </a>
