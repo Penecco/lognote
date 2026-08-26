@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Sparkles } from "lucide-react";
@@ -10,26 +8,22 @@ import { supabase } from "@/lib/supabase";
 export default function Home() {
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(true);
-  
-  // デバッグ用
-  const [debugInfo, setDebugInfo] = useState<{hash: string, event: string, user: string}>({
-    hash: '', event: 'NONE', user: 'NONE'
-  });
 
   useEffect(() => {
     let isMounted = true;
 
-    if (typeof window !== 'undefined') {
-      setDebugInfo(prev => ({ ...prev, hash: window.location.hash || 'NO_HASH' }));
+    // URLハッシュにエラーが含まれているかチェック
+    if (typeof window !== 'undefined' && window.location.hash.includes('error=')) {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const errorDesc = hashParams.get('error_description');
+      if (errorDesc) {
+        alert('ログインエラーが発生しました: ' + decodeURIComponent(errorDesc));
+      }
     }
 
-    const checkUser = async (sourceEvent: string = 'INIT') => {
+    const checkUser = async () => {
       try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        
-        if (isMounted) {
-          setDebugInfo(prev => ({ ...prev, user: user ? user.id : (error ? error.message : 'NULL') }));
-        }
+        const { data: { user } } = await supabase.auth.getUser();
 
         if (user) {
           const { data } = await supabase
@@ -53,14 +47,11 @@ export default function Home() {
       }
     };
 
-    checkUser('INIT');
+    checkUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (isMounted) {
-        setDebugInfo(prev => ({ ...prev, event: event }));
-      }
       if (event === 'SIGNED_IN' || session) {
-        checkUser(event);
+        checkUser();
       }
     });
 
@@ -113,14 +104,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-4 font-sans relative">
-      {/* デバッグ表示 */}
-      <div className="absolute top-4 left-4 bg-black/80 text-green-400 p-4 text-xs font-mono rounded-lg z-50 max-w-xs break-all">
-        <p><strong>[DEBUG]</strong></p>
-        <p>URL Hash: {debugInfo.hash}</p>
-        <p>Auth Event: {debugInfo.event}</p>
-        <p>User: {debugInfo.user}</p>
-      </div>
-
       <div className="max-w-lg w-full text-center space-y-5 bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10">
         <div className="w-40 h-40 md:w-48 md:h-48 mx-auto mb-2 flex items-center justify-center overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
