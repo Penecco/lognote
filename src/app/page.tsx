@@ -12,10 +12,16 @@ export default function Home() {
       return;
     }
 
+    // 確実に別のアカウントでログインできるように、既存のセッションを破棄する
+    await supabase.auth.signOut();
+
     await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo: `${window.location.origin}/tutorial`,
+        queryParams: {
+          prompt: 'consent', // アカウント選択画面を毎回強制表示させる
+        },
       }
     });
   };
