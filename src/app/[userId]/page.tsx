@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
     : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://logdrop-penecco.vercel.app'); // ※本番ドメインに合わせてください
 
-  const ogImageUrl = `${baseUrl}/api/og?userId=${decodedUserId}`;
+  const ogImageUrl = `${baseUrl}/api/og/${decodedUserId}.png`;
 
   return {
     title: `${data.username}のプロフィール`,
