@@ -22,9 +22,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!data) return { title: 'プロフィールが見つかりません' };
 
-  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
-    : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://lognote-puce.vercel.app');
+  const baseUrl = process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:3000' 
+    : 'https://lognote-puce.vercel.app';
 
   const ogImageUrl = `${baseUrl}/api/og/${decodedUserId}.png`;
 

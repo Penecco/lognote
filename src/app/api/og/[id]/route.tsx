@@ -19,9 +19,9 @@ export async function GET(request: Request, { params }: Props) {
     // 例: "penecco.png" -> "penecco"
     const userId = id.replace(/\.(png|jpg|jpeg)$/i, '');
 
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
-      : (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://lognote-puce.vercel.app');
+    const baseUrl = process.env.NODE_ENV === 'development' 
+      ? 'http://localhost:3000' 
+      : 'https://lognote-puce.vercel.app';
 
     let username = "ゲスト";
     let avatarUrl = `${baseUrl}/images/lognote-logo.png`; // デフォルト画像
