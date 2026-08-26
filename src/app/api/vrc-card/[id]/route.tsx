@@ -82,17 +82,17 @@ export async function GET(request: Request, { params }: Props) {
     const colors = themeColors[activeTheme] || themeColors.pink;
 
     // 表示項目のマスターデータ
-    const ITEM_LABELS: Record<string, { label: string, emoji: string, key: string }> = {
-      customTags: { label: 'カスタムタグ', emoji: '🏷️', key: 'custom_tags' },
-      vrcHistory: { label: 'VRChat歴', emoji: '🕰️', key: 'vrc_history' },
-      playStyles: { label: 'プレイスタイル', emoji: '🎮', key: 'play_style' },
-      playEnvironments: { label: 'プレイ環境', emoji: '💻', key: 'play_environments' },
-      joinPolicy: { label: 'Joinの方針', emoji: '🚪', key: 'join_policy' },
-      activeTimes: { label: 'よくいる時間', emoji: '⏰', key: 'active_time' },
-      creatives: { label: 'クリエイティブ', emoji: '🎨', key: 'creatives' },
-      partnerStatus: { label: 'パートナー', emoji: '💍', key: 'partner_status' },
-      mbti: { label: 'MBTI', emoji: '🧠', key: 'mbti' },
-      realLife: { label: 'リアル属性', emoji: '🌍', key: 'real_life' },
+    const ITEM_LABELS: Record<string, { label: string, key: string }> = {
+      customTags: { label: 'カスタムタグ', key: 'custom_tags' },
+      vrcHistory: { label: 'VRChat歴', key: 'vrc_history' },
+      playStyles: { label: 'プレイスタイル', key: 'play_style' },
+      playEnvironments: { label: 'プレイ環境', key: 'play_environments' },
+      joinPolicy: { label: 'Joinの方針', key: 'join_policy' },
+      activeTimes: { label: 'よくいる時間', key: 'active_time' },
+      creatives: { label: 'クリエイティブ', key: 'creatives' },
+      partnerStatus: { label: 'パートナー', key: 'partner_status' },
+      mbti: { label: 'MBTI', key: 'mbti' },
+      realLife: { label: 'リアル属性', key: 'real_life' },
     };
 
     return new ImageResponse(
@@ -175,12 +175,13 @@ export async function GET(request: Request, { params }: Props) {
 
                 return (
                   <div key={itemId} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <div style={{ color: colors.main, fontSize: 22, fontWeight: 'bold' }}>
-                      {itemDef.emoji} {itemDef.label}
+                    <div style={{ display: 'flex', color: colors.main, fontSize: 22, fontWeight: 'bold' }}>
+                      {itemDef.label}
                     </div>
                     <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                      {valueArray.slice(0, 4).map((val, i) => (
+                      {valueArray.map((val, i) => (
                         <div key={i} style={{ 
+                          display: 'flex',
                           backgroundColor: itemId === 'customTags' ? 'transparent' : '#f0f0f0', 
                           padding: itemId === 'customTags' ? '0' : '6px 18px', 
                           borderRadius: '20px', 

@@ -17,16 +17,16 @@ const themeColors = {
 };
 
 const ITEM_LABELS = [
-  { id: 'customTags', label: 'カスタムタグ', emoji: '🏷️' },
-  { id: 'vrcHistory', label: 'VRChat歴', emoji: '🕰️' },
-  { id: 'playStyles', label: 'プレイスタイル', emoji: '🎮' },
-  { id: 'playEnvironments', label: 'プレイ環境', emoji: '💻' },
-  { id: 'joinPolicy', label: 'Joinの方針', emoji: '🚪' },
-  { id: 'activeTimes', label: 'よくいる時間', emoji: '⏰' },
-  { id: 'creatives', label: 'クリエイティブ', emoji: '🎨' },
-  { id: 'partnerStatus', label: 'パートナー', emoji: '💍' },
-  { id: 'mbti', label: 'MBTI', emoji: '🧠' },
-  { id: 'realLife', label: 'リアル属性', emoji: '🌍' },
+  { id: 'customTags', label: 'カスタムタグ' },
+  { id: 'vrcHistory', label: 'VRChat歴' },
+  { id: 'playStyles', label: 'プレイスタイル' },
+  { id: 'playEnvironments', label: 'プレイ環境' },
+  { id: 'joinPolicy', label: 'Joinの方針' },
+  { id: 'activeTimes', label: 'よくいる時間' },
+  { id: 'creatives', label: 'クリエイティブ' },
+  { id: 'partnerStatus', label: 'パートナー' },
+  { id: 'mbti', label: 'MBTI' },
+  { id: 'realLife', label: 'リアル属性' },
 ];
 
 export default function VrcCardCustomizer() {
@@ -138,7 +138,7 @@ export default function VrcCardCustomizer() {
 
         {/* プレビューエリア */}
         <div className="bg-white p-4 sm:p-6 rounded-[32px] shadow-sm border border-brand-sub/20 mb-6">
-          <h2 className="text-lg font-black text-brand-text mb-4 text-center">✨ プレビュー</h2>
+          <h2 className="text-lg font-black text-brand-text mb-4 text-center">プレビュー</h2>
           <div className="rounded-2xl overflow-hidden border-4 border-brand-bg relative group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
@@ -160,7 +160,7 @@ export default function VrcCardCustomizer() {
           {/* テーマカラー */}
           <div>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-black text-brand-text text-lg">🎨 テーマカラー</h3>
+              <h3 className="font-black text-brand-text text-lg">テーマカラー</h3>
             </div>
             <div className="flex flex-wrap gap-3">
               {Object.entries(themeColors).map(([key, value]) => (
@@ -182,7 +182,7 @@ export default function VrcCardCustomizer() {
           {/* 表示項目の選択 */}
           <div>
             <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
-              <h3 className="font-black text-brand-text text-lg">📌 表示する項目を選ぶ</h3>
+              <h3 className="font-black text-brand-text text-lg">表示する項目を選ぶ</h3>
               <span className={`text-sm font-bold px-3 py-1 rounded-full ${selectedItems.length >= 4 ? 'bg-brand-pink/10 text-brand-pink' : 'bg-brand-bg text-brand-text/60'}`}>
                 {selectedItems.length} / 4 個選択中
               </span>
@@ -211,7 +211,7 @@ export default function VrcCardCustomizer() {
                     `}
                   >
                     <span className="font-bold flex items-center gap-2">
-                      <span className="text-xl">{item.emoji}</span> {item.label}
+                      {item.label}
                     </span>
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center
                       ${isSelected ? 'border-brand-pink bg-brand-pink' : 'border-brand-sub/30'}
