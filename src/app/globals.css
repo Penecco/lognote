@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ろぐのーと用カラーパレット (テーマ変数と連携) */
+  --color-brand-bg: var(--theme-bg);
+  --color-brand-card: var(--theme-card);
+  --color-brand-text: var(--theme-text);
+  --color-brand-sub: var(--theme-sub);
+  --color-brand-pink: var(--theme-main);
+  --color-brand-accent: var(--theme-accent);
+  --color-brand-hover: var(--theme-hover);
+  
+  --font-sans: var(--font-zen-maru), sans-serif;
+  --color-background: var(--color-brand-bg);
+  --color-foreground: var(--color-brand-text);
+}
+
+:root {
+  /* デフォルト (theme-pink) */
+  --theme-bg: #fdf5f7;
+  --theme-card: #ffffff;
+  --theme-text: #594a4e;
+  --theme-sub: #fecdd3;    /* 淡いピンク */
+  --theme-main: #fda4af;   /* パステルピンク */
+  --theme-accent: #fb7185; /* 少し濃いパステルピンク */
+  --theme-hover: #fcf0f2;
+}
+
+/* 複数のテーマ */
+.theme-pink {
+  --theme-bg: #fdf5f7;
+  --theme-card: #ffffff;
+  --theme-text: #594a4e;
+  --theme-sub: #fecdd3;    /* 淡いピンク */
+  --theme-main: #fda4af;   /* パステルピンク */
+  --theme-accent: #fb7185; /* 少し濃いパステルピンク */
+  --theme-hover: #fcf0f2;
+}
+
+.theme-blue {
+  --theme-bg: #f0f9ff;
+  --theme-card: #ffffff;
+  --theme-text: #1e3a8a;
+  --theme-sub: #bae6fd;    /* 淡い水色 */
+  --theme-main: #7dd3fc;   /* パステルブルー */
+  --theme-accent: #38bdf8; /* 少し濃いパステルブルー */
+  --theme-hover: #eff6ff;
+}
+
+.theme-green {
+  --theme-bg: #f0fdf4;
+  --theme-card: #ffffff;
+  --theme-text: #064e3b;
+  --theme-sub: #a7f3d0;    /* 淡いミント */
+  --theme-main: #6ee7b7;   /* パステルミント */
+  --theme-accent: #34d399; /* 少し濃いパステルミント */
+  --theme-hover: #f0fdf4;
+}
+
+.theme-mono {
+  --theme-bg: #f8fafc;
+  --theme-card: #ffffff;
+  --theme-text: #334155;
+  --theme-sub: #e2e8f0;    /* 淡いグレー */
+  --theme-main: #cbd5e1;   /* ライトグレー */
+  --theme-accent: #94a3b8; /* 少し濃いグレー */
+  --theme-hover: #f1f5f9;
+}
+
+.theme-dark {
+  --theme-bg: #0f172a;
+  --theme-card: #1e293b;
+  --theme-text: #f8fafc;
+  --theme-sub: #334155;    /* カードより少し明るいグレー */
+  --theme-main: #a78bfa;   /* パステルパープル */
+  --theme-accent: #8b5cf6; /* 少し濃いパープル */
+  --theme-hover: #1e293b;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* フォーム要素のフォーカス時アウトラインを可愛くする */
+input:focus, textarea:focus {
+  outline: 2px solid var(--theme-main);
+  outline-offset: 2px;
+}
