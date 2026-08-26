@@ -37,6 +37,10 @@ export interface ProfileData {
     others: { title: string; url: string }[];
   };
   isSearchable: boolean;
+  vrcCardSettings?: {
+    themeColor: string;
+    selectedItems: string[];
+  };
 }
 
 export const defaultProfile: ProfileData = {
@@ -77,4 +81,8 @@ export const defaultProfile: ProfileData = {
     others: [],
   },
   isSearchable: false,
+  vrcCardSettings: {
+    themeColor: "pink",
+    selectedItems: ["playStyles", "activeTimes"]
+  }
 };

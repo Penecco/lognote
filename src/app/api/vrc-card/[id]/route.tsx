@@ -14,6 +14,10 @@ type Props = {
 export async function GET(request: Request, { params }: Props) {
   try {
     const { id } = await params;
+    const url = new URL(request.url);
+    const previewTheme = url.searchParams.get('previewTheme');
+    const previewItemsParam = url.searchParams.get('previewItems');
+    const previewItems = previewItemsParam ? previewItemsParam.split(',') : null;
     
     // ".png" などの拡張子を取り除いて userId を抽出する
     const userId = id.replace(/\.(png|jpg|jpeg)$/i, '');
@@ -24,36 +28,40 @@ export async function GET(request: Request, { params }: Props) {
 
     let username = "ゲスト";
     let avatarUrl = `${baseUrl}/images/lognote-logo.png`;
-    let customTags: string[] = [];
-    let playStyles: string[] = [];
-    let activeTimes: string[] = [];
-    let mbti: string[] = [];
+    
+    // 全データ保持用
+    let profileData: any = {};
+    let dbSettings: any = null;
+    let fallbackTheme = "pink";
 
     if (userId) {
       let { data } = await supabase
         .from('profiles')
-        .select('username, avatar_url, custom_tags, play_style, active_time, mbti')
+        .select('*')
         .eq('user_id', userId)
         .single();
         
       if (!data) {
         const { data: fallbackData } = await supabase
           .from('profiles')
-          .select('username, avatar_url, custom_tags, play_style, active_time, mbti')
+          .select('*')
           .eq('username', userId)
           .single();
         data = fallbackData;
       }
 
       if (data) {
+        profileData = data;
         username = data.username || "名無しさん";
         if (data.avatar_url) avatarUrl = data.avatar_url;
-        if (data.custom_tags && Array.isArray(data.custom_tags)) customTags = data.custom_tags;
-        if (data.play_style && Array.isArray(data.play_style)) playStyles = data.play_style;
-        if (data.active_time && Array.isArray(data.active_time)) activeTimes = data.active_time;
-        if (data.mbti && Array.isArray(data.mbti)) mbti = data.mbti;
+        dbSettings = data.vrc_card_settings;
+        fallbackTheme = data.theme_color || "pink";
       }
     }
+
+    // 最終的な設定の決定 (プレビューURL > DB設定 > デフォルト)
+    const activeTheme = previewTheme || (dbSettings?.themeColor) || fallbackTheme;
+    const activeItems = previewItems || (dbSettings?.selectedItems) || ['playStyles', 'activeTimes', 'mbti'];
 
     const bgUrl = `${baseUrl}/images/og_bg.png`;
 
@@ -61,6 +69,31 @@ export async function GET(request: Request, { params }: Props) {
       'https://github.com/googlefonts/zen-marugothic/raw/main/fonts/ttf/ZenMaruGothic-Bold.ttf',
       { cache: 'force-cache' }
     ).then((res) => res.arrayBuffer());
+
+    // カラーテーマ設定
+    const themeColors: Record<string, { main: string, sub: string, text: string }> = {
+      pink: { main: '#ff7eb3', sub: '#ff758c', text: '#fff' },
+      blue: { main: '#00b4d8', sub: '#90e0ef', text: '#fff' },
+      green: { main: '#4ade80', sub: '#86efac', text: '#fff' },
+      purple: { main: '#c084fc', sub: '#d8b4fe', text: '#fff' },
+      orange: { main: '#fb923c', sub: '#fdba74', text: '#fff' },
+      dark: { main: '#333333', sub: '#666666', text: '#fff' },
+    };
+    const colors = themeColors[activeTheme] || themeColors.pink;
+
+    // 表示項目のマスターデータ
+    const ITEM_LABELS: Record<string, { label: string, emoji: string, key: string }> = {
+      customTags: { label: 'カスタムタグ', emoji: '🏷️', key: 'custom_tags' },
+      vrcHistory: { label: 'VRChat歴', emoji: '🕰️', key: 'vrc_history' },
+      playStyles: { label: 'プレイスタイル', emoji: '🎮', key: 'play_style' },
+      playEnvironments: { label: 'プレイ環境', emoji: '💻', key: 'play_environments' },
+      joinPolicy: { label: 'Joinの方針', emoji: '🚪', key: 'join_policy' },
+      activeTimes: { label: 'よくいる時間', emoji: '⏰', key: 'active_time' },
+      creatives: { label: 'クリエイティブ', emoji: '🎨', key: 'creatives' },
+      partnerStatus: { label: 'パートナー', emoji: '💍', key: 'partner_status' },
+      mbti: { label: 'MBTI', emoji: '🧠', key: 'mbti' },
+      realLife: { label: 'リアル属性', emoji: '🌍', key: 'real_life' },
+    };
 
     return new ImageResponse(
       (
@@ -95,16 +128,16 @@ export async function GET(request: Request, { params }: Props) {
               display: 'flex',
               flexDirection: 'row',
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              padding: '60px 80px',
-              borderRadius: '60px',
+              padding: '50px 70px',
+              borderRadius: '50px',
               boxShadow: '0 10px 50px rgba(0, 0, 0, 0.3)',
-              border: '4px solid rgba(255, 255, 255, 0.7)',
+              border: `6px solid ${colors.main}50`,
               width: '1000px',
               gap: '60px',
             }}
           >
             {/* 左側: アバターと名前 */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px', justifyContent: 'center' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={avatarUrl}
@@ -114,14 +147,14 @@ export async function GET(request: Request, { params }: Props) {
                   height: '280px',
                   borderRadius: '140px',
                   objectFit: 'cover',
-                  border: '8px solid white',
+                  border: `8px solid ${colors.main}`,
                   marginBottom: '20px',
                   boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
                 }}
               />
               <div style={{ 
                 display: 'flex', 
-                fontSize: 48, 
+                fontSize: 44, 
                 fontWeight: 'bold', 
                 color: '#333', 
                 textAlign: 'center',
@@ -134,58 +167,34 @@ export async function GET(request: Request, { params }: Props) {
             {/* 右側: ステータス */}
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center', gap: '20px' }}>
               
-              {/* プレイスタイル */}
-              {playStyles.length > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ color: '#666', fontSize: 24, fontWeight: 'bold' }}>🎮 プレイスタイル</div>
-                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                    {playStyles.slice(0, 3).map((style, i) => (
-                      <div key={i} style={{ backgroundColor: '#f0f0f0', padding: '8px 20px', borderRadius: '20px', fontSize: 28, fontWeight: 'bold', color: '#444' }}>
-                        {style}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {activeItems.map((itemId) => {
+                const itemDef = ITEM_LABELS[itemId];
+                if (!itemDef) return null;
+                const valueArray = profileData[itemDef.key];
+                if (!valueArray || !Array.isArray(valueArray) || valueArray.length === 0) return null;
 
-              {/* ログイン時間帯 */}
-              {activeTimes.length > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ color: '#666', fontSize: 24, fontWeight: 'bold' }}>⏰ よくいる時間</div>
-                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                    {activeTimes.slice(0, 4).map((time, i) => (
-                      <div key={i} style={{ backgroundColor: '#f0f0f0', padding: '8px 20px', borderRadius: '20px', fontSize: 28, fontWeight: 'bold', color: '#444' }}>
-                        {time}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* MBTI */}
-              {mbti.length > 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ color: '#666', fontSize: 24, fontWeight: 'bold' }}>🧠 MBTI</div>
-                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                    {mbti.slice(0, 1).map((type, i) => (
-                      <div key={i} style={{ backgroundColor: '#00b4d8', padding: '8px 20px', borderRadius: '20px', fontSize: 28, fontWeight: 'bold', color: '#fff' }}>
-                        {type}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* カスタムタグ (スペースが余っていれば) */}
-              {customTags.length > 0 && (
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: 'auto', paddingTop: '10px' }}>
-                  {customTags.slice(0, 3).map((tag, i) => (
-                    <div key={i} style={{ color: '#00b4d8', fontSize: 28, fontWeight: 'bold' }}>
-                      #{tag}
+                return (
+                  <div key={itemId} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ color: colors.main, fontSize: 22, fontWeight: 'bold' }}>
+                      {itemDef.emoji} {itemDef.label}
                     </div>
-                  ))}
-                </div>
-              )}
+                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                      {valueArray.slice(0, 4).map((val, i) => (
+                        <div key={i} style={{ 
+                          backgroundColor: itemId === 'customTags' ? 'transparent' : '#f0f0f0', 
+                          padding: itemId === 'customTags' ? '0' : '6px 18px', 
+                          borderRadius: '20px', 
+                          fontSize: itemId === 'customTags' ? 26 : 24, 
+                          fontWeight: 'bold', 
+                          color: itemId === 'customTags' ? colors.main : '#444' 
+                        }}>
+                          {itemId === 'customTags' ? `#${val}` : val}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
 
             </div>
           </div>
