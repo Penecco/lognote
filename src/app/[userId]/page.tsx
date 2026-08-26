@@ -30,8 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ogImageUrl = `${baseUrl}/api/og/${decodedUserId}.png`;
 
   return {
-    title: `${data.username}のプロフィール`,
-    description: data.bio || `${data.username}のプロフィールページです。`,
+    title: `${data.username}のろぐのーとプロフィール⭐`,
+    description: data.bio || `${data.username}のろぐのーとプロフィールページです。`,
     openGraph: {
       images: [
         {
@@ -44,8 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${data.username}のプロフィール`,
-      description: data.bio || `${data.username}のプロフィールページです。`,
+      title: `${data.username}のろぐのーとプロフィール⭐`,
+      description: data.bio || `${data.username}のろぐのーとプロフィールページです。`,
       images: [ogImageUrl],
     },
   }
