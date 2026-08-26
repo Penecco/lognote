@@ -22,15 +22,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-4 font-sans relative">
-      {/* うっすらとした装飾 */}
-      <div className="absolute top-10 left-10 text-brand-sub/20">
-        <Sparkles className="w-24 h-24" />
-      </div>
-      <div className="absolute bottom-10 right-10 text-brand-sub/20">
-        <Sparkles className="w-32 h-32" />
-      </div>
-
-      <div className="max-w-md w-full text-center space-y-5 bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10">
+      <div className="max-w-lg w-full text-center space-y-5 bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10">
         <div className="w-40 h-40 md:w-48 md:h-48 mx-auto mb-2 flex items-center justify-center overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
@@ -71,7 +63,7 @@ export default function Home() {
       </div>
 
       {/* 開発者紹介セクション */}
-      <div className="max-w-md w-full mt-6 bg-white/80 backdrop-blur-md p-5 md:p-8 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10 text-center">
+      <div className="max-w-lg w-full mt-6 bg-white/80 backdrop-blur-md p-5 md:p-8 rounded-[40px] shadow-sm border border-brand-sub/20 relative z-10 text-center">
         <h2 className="text-sm font-bold text-brand-text/50 mb-4 tracking-wider">Developed by</h2>
         
         <div className="flex flex-col items-center gap-3">

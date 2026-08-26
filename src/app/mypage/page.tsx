@@ -50,7 +50,7 @@ function MyPageContent() {
 
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-start pt-8 p-4 font-sans relative pb-12">
-      <div className="max-w-sm md:max-w-md w-full text-center space-y-5 bg-white p-5 md:p-8 rounded-[28px] shadow-sm border border-brand-sub/20 mb-6">
+      <div className="max-w-md md:max-w-lg w-full text-center space-y-5 bg-white p-5 md:p-8 rounded-[28px] shadow-sm border border-brand-sub/20 mb-6">
         <h1 className="text-xl font-black text-brand-text mb-3">マイページ</h1>
         
         <div className="flex flex-col gap-3">
@@ -89,7 +89,7 @@ function MyPageContent() {
       </div>
 
       {/* 姉妹サイト紹介 */}
-      <div className="max-w-sm md:max-w-md w-full bg-white p-6 md:p-8 rounded-[32px] shadow-sm border border-brand-sub/20 text-center relative overflow-hidden group">
+      <div className="max-w-md md:max-w-lg w-full bg-white p-6 md:p-8 rounded-[32px] shadow-sm border border-brand-sub/20 text-center relative overflow-hidden group">
         <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-[#00b4d8] to-[#90e0ef]" />
         <h3 className="text-sm font-bold text-brand-text/50 mb-3">姉妹サイトもよろしければどうぞ！</h3>
         
