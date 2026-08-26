@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Share2, Edit3, AtSign, Copy, Check, ExternalLink, X, Home, Image as ImageIcon } from "lucide-react";
+import { Share2, Edit3, AtSign, Copy, Check, ExternalLink, X, Home, Image as ImageIcon, LogOut } from "lucide-react";
 import { useEffect, useState, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -41,6 +41,13 @@ function MyPageContent() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
+  };
+
+  const handleLogout = async () => {
+    if (confirm("ログアウトしますか？")) {
+      await supabase.auth.signOut();
+      router.push("/");
+    }
   };
 
   const closePopup = () => {
@@ -92,6 +99,16 @@ function MyPageContent() {
           >
             <AtSign className="w-5 h-5" /> Xでシェア
           </a>
+        </div>
+        
+        {/* ログアウトボタン */}
+        <div className="mt-8 flex justify-center pt-2">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-brand-text/50 font-bold hover:text-red-500 transition-colors"
+          >
+            <LogOut className="w-5 h-5" /> ログアウト
+          </button>
         </div>
       </div>
 

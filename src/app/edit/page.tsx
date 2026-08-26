@@ -108,6 +108,24 @@ export default function EditProfile() {
         return;
       }
 
+      // Supabaseに保存する前にIDの重複チェック
+      const { data: existingUser, error: checkError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', profile.userId)
+        .neq('id', user.id) // 自分のID以外で同じuser_idがないか
+        .maybeSingle();
+
+      if (checkError && checkError.code !== 'PGRST116') {
+        throw checkError;
+      }
+      
+      if (existingUser) {
+        alert("そのユーザーIDは既に他の人に使われています！別のID（3文字以上）を入力してね🐾");
+        setIsSaving(false);
+        return;
+      }
+
       const { error } = await supabase
         .from('profiles')
         .upsert({
