@@ -9,6 +9,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 function MyPageContent() {
   const [userId, setUserId] = useState<string>('');
   const [copied, setCopied] = useState(false);
+  const [vrcCardCopied, setVrcCardCopied] = useState(false);
   const [origin, setOrigin] = useState('');
   
   const searchParams = useSearchParams();
@@ -40,6 +41,14 @@ function MyPageContent() {
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const handleCopyVrcCardLink = () => {
+    const url = `${origin}/api/vrc-card/${userId}.png`;
+    navigator.clipboard.writeText(url).then(() => {
+      setVrcCardCopied(true);
+      setTimeout(() => setVrcCardCopied(false), 2000);
     });
   };
 
@@ -81,8 +90,17 @@ function MyPageContent() {
             href="/mypage/vrc-card"
             className="flex items-center justify-center gap-2 bg-white text-brand-text border-2 border-brand-sub/50 px-4 py-3 rounded-full font-black text-sm md:text-base transition-all hover:bg-brand-hover hover:-translate-y-1 active:scale-95 shadow-sm w-full"
           >
-            <ImageIcon className="w-5 h-5 text-brand-pink" /> VRCカードをカスタマイズ
+            <ImageIcon className="w-5 h-5" /> VRCカードをカスタマイズ
           </Link>
+
+          <button 
+            onClick={handleCopyVrcCardLink}
+            disabled={!userId}
+            className="flex items-center justify-center gap-2 bg-brand-card text-brand-text border-2 border-brand-sub/50 px-4 py-3 rounded-full font-black text-sm md:text-base transition-all hover:bg-brand-hover hover:-translate-y-1 active:scale-95 shadow-sm w-full disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {vrcCardCopied ? <Check className="w-5 h-5 text-brand-pink" /> : <Copy className="w-5 h-5" />}
+            {vrcCardCopied ? "コピーしたよ！" : "VRCカードのURLをコピー"}
+          </button>
 
           <a 
             href={`https://x.com/intent/tweet?text=${encodeURIComponent(`VRCのプロフィールを作りました⭐\n\nリンク先でぜひ見てみてね🐱\n\nみんなも作ってシェアしよう🐾\n\n#VRChatプロフみてみて #ろぐのーと\n`)}&url=${encodeURIComponent(origin + '/' + userId)}`}

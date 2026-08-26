@@ -137,7 +137,7 @@ export default function VrcCardCustomizer() {
           <Link href="/mypage" className="flex items-center gap-2 text-brand-text/70 hover:text-brand-pink transition-colors font-bold">
             <ArrowLeft className="w-5 h-5" /> マイページへ戻る
           </Link>
-          <h1 className="text-xl font-black text-brand-text hidden sm:block">VRCカードを作る</h1>
+          <h1 className="text-xl font-black text-brand-text hidden sm:block">VRCカードをカスタマイズ</h1>
           <div className="w-[120px]"></div> {/* スペーサー */}
         </div>
 
