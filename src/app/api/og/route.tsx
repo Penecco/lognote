@@ -38,7 +38,8 @@ export async function GET(request: Request) {
 
     // Zen Maru Gothic のフォントをフェッチ (Bold)
     const fontData = await fetch(
-      'https://github.com/googlefonts/zen-marugothic/raw/main/fonts/ttf/ZenMaruGothic-Bold.ttf'
+      'https://github.com/googlefonts/zen-marugothic/raw/main/fonts/ttf/ZenMaruGothic-Bold.ttf',
+      { cache: 'force-cache' }
     ).then((res) => res.arrayBuffer());
 
     return new ImageResponse(
@@ -144,8 +145,10 @@ export async function GET(request: Request) {
       }
     );
   } catch (e: any) {
-    console.error(e);
-    return new Response(`Failed to generate image`, {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('OG image generation error:', e);
+    }
+    return new Response('Failed to generate image', {
       status: 500,
     });
   }

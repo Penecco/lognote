@@ -155,8 +155,10 @@ export async function GET(request: Request, { params }: Props) {
       }
     );
   } catch (e: any) {
-    console.error(e);
-    return new Response(`Failed to generate image`, {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('OG image generation error:', e);
+    }
+    return new Response('Failed to generate image', {
       status: 500,
     });
   }

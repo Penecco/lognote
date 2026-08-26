@@ -132,7 +132,7 @@ export async function GET(request: Request, { params }: Props) {
           >
             {/* 左側: アバターアイコン（縦に最大3枚） */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '180px', justifyContent: 'flex-start', paddingTop: '10px', gap: '24px' }}>
-              {(profileData.avatarUrls?.length > 0 ? profileData.avatarUrls : [avatarUrl])
+              {(profileData.avatar_urls?.length > 0 ? profileData.avatar_urls : [avatarUrl])
                 .slice(0, 3)
                 .map((url: string, index: number) => (
                   <div key={index} style={{ display: 'flex' }}>
@@ -219,8 +219,10 @@ export async function GET(request: Request, { params }: Props) {
       }
     );
   } catch (e: any) {
-    console.error(e);
-    return new Response(`Failed to generate image`, {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('VRC Card generation error:', e);
+    }
+    return new Response('Failed to generate image', {
       status: 500,
     });
   }
