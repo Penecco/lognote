@@ -15,23 +15,44 @@ export default function Tutorial() {
   const router = useRouter();
 
   useEffect(() => {
+    let isMounted = true;
+    
     const checkExistingProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('user_id')
-          .eq('id', user.id)
-          .single();
-        
-        if (data && data.user_id) {
-          router.replace('/mypage');
-          return;
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data } = await supabase
+            .from('profiles')
+            .select('user_id')
+            .eq('id', user.id)
+            .single();
+          
+          if (data && data.user_id && isMounted) {
+            router.replace('/mypage');
+            return;
+          }
         }
+      } catch (error) {
+        console.error("Profile check error:", error);
+      } finally {
+        if (isMounted) setIsChecking(false);
       }
-      setIsChecking(false);
     };
+
+    // 初期チェック
     checkExistingProfile();
+
+    // OAuth直後などセッションが遅れて確立する場合に備える
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' || session) {
+        checkExistingProfile();
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      authListener.subscription.unsubscribe();
+    };
   }, [router]);
 
   const handleComplete = async () => {
