@@ -120,19 +120,15 @@ export default async function PublicProfilePage({ params }: Props) {
   };
 
   return (
-    <div className="relative min-h-screen bg-brand-bg">
+    <div className="relative min-h-screen bg-brand-bg flex flex-col">
       <ProfilePreview profile={profile} />
       
-      {/* スマホ等でボタンの下が隠れないように余白を確保 */}
-      <div className="pb-28" /> 
-      
-      {/* 自分も作ってみる！ボタン（画面下部固定） */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-md border-t border-brand-sub/20 flex justify-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <div className="flex justify-center pb-12 pt-4">
         <Link 
           href="/"
-          className="w-full max-w-sm bg-brand-pink text-white text-center py-3.5 md:py-4 rounded-full font-black text-lg md:text-xl transition-all hover:bg-brand-pink/90 hover:-translate-y-1 active:scale-95 shadow-md flex items-center justify-center gap-2"
+          className="w-full max-w-sm mx-4 bg-brand-pink text-white text-center py-3.5 md:py-4 rounded-full font-black text-lg md:text-xl transition-all hover:bg-brand-pink/90 hover:-translate-y-1 active:scale-95 shadow-md"
         >
-          自分も作ってみる！✨
+          自分も作ってみる
         </Link>
       </div>
     </div>
