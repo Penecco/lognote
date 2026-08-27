@@ -136,6 +136,7 @@ export default function Home() {
         </div>
         
         <p className="text-xs text-brand-text/50 font-bold mt-6">
+          ※メールアドレスを登録しているアカウントでログインしてください。<br />
           ※不必要なデータや個人情報を取得することはありません。
         </p>
       </div>

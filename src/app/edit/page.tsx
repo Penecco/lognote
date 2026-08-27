@@ -91,6 +91,15 @@ export default function EditProfile() {
   }, [router]);
 
   const handleSave = async (returnToDashboard = false) => {
+    // 入力途中のデータがないかチェック
+    const pendingInputs = document.querySelectorAll<HTMLInputElement>('input[data-pending-input="true"]');
+    for (const input of Array.from(pendingInputs)) {
+      if (input.value.trim() !== '') {
+        alert(`入力途中の項目（「${input.value}」）が残っています！\n\n・追加したい場合：Enterキーを押して確定してね\n・不要な場合：文字を消してから保存してね🐾`);
+        return;
+      }
+    }
+
     if (!profile.username || profile.username.trim() === "") {
       alert("ユーザー名は必須です！");
       return;

@@ -101,6 +101,7 @@ const MultiTagGroup = ({
           onKeyDown={handleAdd}
           placeholder={`＋ ${title}を入力`}
           className="mt-3 w-full p-2.5 rounded-xl border-2 border-brand-sub/30 bg-brand-card/50 focus:outline-none focus:border-brand-sub focus:ring-2 focus:ring-brand-sub/20 transition-all text-base md:text-xl font-bold text-brand-text"
+          data-pending-input="true"
         />
       )}
     </div>
@@ -338,7 +339,8 @@ export default function ProfileForm({ profile, setProfile, isTutorial = false }:
     <div className="p-4 md:p-6 w-full max-w-md mx-auto font-sans text-brand-text">
       <h2 className="text-2xl font-black mb-2">プロフィール編集</h2>
       <p className="text-brand-text/70 mb-8 text-base md:text-xl font-bold">
-        自分らしくカスタマイズしてみよう！
+        自分らしくカスタマイズしてみよう！<br />
+        <span className="text-sm md:text-base text-brand-pink mt-1 block">※自由入力欄は、文字を入力した後に「Enterキー」を押して追加してね！</span>
       </p>
       
       <div className="space-y-6">
@@ -597,6 +599,7 @@ export default function ProfileForm({ profile, setProfile, isTutorial = false }:
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleAddTag}
                 disabled={(profile.customTags || []).length >= 10}
+                data-pending-input="true"
                 className="w-full p-4 rounded-xl border-2 border-brand-sub/30 bg-brand-card/50 focus:outline-none focus:border-brand-sub focus:ring-4 focus:ring-brand-sub/20 transition-all font-bold text-brand-text"
                 placeholder="例: 改変好き / 無言勢 etc."
               />
