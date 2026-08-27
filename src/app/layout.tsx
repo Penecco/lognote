@@ -9,8 +9,18 @@ const zenMaruGothic = Zen_Maru_Gothic({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lognote-penecco.vercel.app"),
   title: "ろぐのーと",
-  description: "一目見ただけであなたがどんな人か分かるプロフ帳を作ろう！",
+  description: "テンプレートで簡単にプロフィールを作れます！",
+  openGraph: {
+    images: ["/images/lognote-logo.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ろぐのーと",
+    description: "テンプレートで簡単にプロフィールを作れます！",
+    images: ["/images/lognote-logo.png"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
