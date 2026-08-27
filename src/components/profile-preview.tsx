@@ -5,9 +5,10 @@ import { User, Clock, Monitor, Gamepad2, Sparkles, MessageCircle, Heart, Image a
 
 interface ProfilePreviewProps {
   profile: ProfileData;
+  children?: React.ReactNode;
 }
 
-export default function ProfilePreview({ profile }: ProfilePreviewProps) {
+export default function ProfilePreview({ profile, children }: ProfilePreviewProps) {
   const [currentAvatarIndex, setCurrentAvatarIndex] = useState(0);
   const [imageOrientations, setImageOrientations] = useState<Record<string, 'landscape' | 'portrait'>>({});
 
@@ -375,6 +376,7 @@ export default function ProfilePreview({ profile }: ProfilePreviewProps) {
 
         </div>
       </div>
+      {children}
     </div>
   );
 }

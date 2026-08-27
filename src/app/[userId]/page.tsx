@@ -120,10 +120,8 @@ export default async function PublicProfilePage({ params }: Props) {
   };
 
   return (
-    <div className="relative min-h-screen bg-brand-bg flex flex-col">
-      <ProfilePreview profile={profile} />
-      
-      <div className="flex justify-center pb-12 pt-4">
+    <ProfilePreview profile={profile}>
+      <div className="flex justify-center pb-12 pt-8">
         <Link 
           href="/"
           className="w-full max-w-sm mx-4 bg-brand-pink text-white text-center py-3.5 md:py-4 rounded-full font-black text-lg md:text-xl transition-all hover:bg-brand-pink/90 hover:-translate-y-1 active:scale-95 shadow-md"
@@ -131,6 +129,6 @@ export default async function PublicProfilePage({ params }: Props) {
           自分も作ってみる
         </Link>
       </div>
-    </div>
+    </ProfilePreview>
   );
 }
