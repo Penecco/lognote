@@ -86,6 +86,7 @@ export async function GET(request: Request, { params }: Props) {
               borderRadius: '60px',
               boxShadow: '0 10px 50px rgba(0, 0, 0, 0.3)',
               border: '4px solid rgba(255, 255, 255, 0.7)',
+              minWidth: '860px',
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
